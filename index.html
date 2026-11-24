@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es-MX">
 <head>
 <meta charset="utf-8">
@@ -394,7 +394,7 @@ function menu(u){
   const emp = u.rol === "empresa";
   const noLeidos = conversaciones(u).filter(c => c.nuevo).length;
   const items = emp
-    ? [["inicio","⌂","Inicio"],["publicar","＋","Publicar vacante"],["misvacantes","☰","Mis vacantes"],["postulados","☺","Personas postuladas"],["mensajes","✉","Mensajes",noLeidos],["perfil","◉",esPart(u)?"Mi perfil":"Perfil de la empresa"],["resenas","★","Calificaciones"]]
+    ? [["inicio","⌂","Inicio"],["publicar","＋","Publicar vacante"],["misvacantes","☰","Mis vacantes"],["postulados","☻","Personas postuladas"],["mensajes","✉","Mensajes",noLeidos],["perfil","◉",esPart(u)?"Mi perfil":"Perfil de la empresa"],["resenas","★","Calificaciones"]]
     : [["inicio","⌂","Inicio"],["vacantes","⌕","Buscar trabajo"],["postulaciones","☰","Mis postulaciones"],["mensajes","✉","Mensajes",noLeidos],["perfil","◉","Mi perfil"],["resenas","★","Calificaciones"]];
   return `<nav class="lado" aria-label="Menú principal">
     <div class="quien"><b>${esc(u.nombre)}</b><br><small>${emp?(esPart(u)?"Cuenta para contratar (particular)":"Cuenta de empresa"):"Cuenta de trabajador"} · ${esc(u.municipio)}</small></div>
