@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es-MX">
 <head>
 <meta charset="utf-8">
@@ -6,170 +6,269 @@
 <meta name="color-scheme" content="light">
 <title>ReImpulso – prototipo funcional</title>
 <style>
+/*
+VOICE: tranquila, respetuosa, de usted; frases cortas.
+IDEA: una ventanilla de atención amable: un paso a la vez, con quien le explica qué sigue.
+PICTURE: la propia herramienta, con botones grandes y avisos claros.
+COLOUR and TYPE: verde profundo, blanco y dorado para avisos; letra grande y clara.
+LAYOUT: barra superior con Letra, Ayuda y Mi cuenta; 5 botones fijos abajo en celular, a la izquierda en computadora.
+*/
 :root{
-  --verde:#0f5a47; --verde-osc:#0b3d31; --verde-claro:#e6f2ec; --verde-medio:#cfe5d9;
-  --tinta:#16231f; --gris:#56615d; --linea:#c9d3cf; --fondo:#f5f7f5; --blanco:#fff;
-  --oro:#b97d10; --rojo:#a8261d; --rojo-claro:#fbe9e7; --azul:#1d4f91; --azul-claro:#e7eef8;
-  --radio:14px; --base:18px;
+  --verde:#0f5a47; --verde-osc:#0b3d31; --verde-claro:#e8f3ed; --verde-medio:#cfe5d9;
+  --tinta:#15211d; --gris:#4a5551; --linea:#c2cdc8; --fondo:#f4f6f4; --blanco:#fff;
+  --oro:#9a6a0c; --oro-claro:#fff5df; --rojo:#a3241b; --rojo-claro:#fcebe9; --azul:#1d4f91; --azul-claro:#e9f0fa;
+  --radio:16px; --base:19px;
 }
 html{font-size:var(--base)}
-html.t2{--base:21px} html.t3{--base:24px}
-html.contraste{--verde:#003d2e;--verde-osc:#000;--gris:#222;--linea:#333;--fondo:#fff;--verde-claro:#fff;--tinta:#000}
-*{box-sizing:border-box}
-body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--tinta);background:var(--fondo);line-height:1.5;font-size:1rem}
-h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:500;line-height:1.2;margin:0 0 .4em}
-h1{font-size:2rem} h2{font-size:1.5rem} h3{font-size:1.15rem}
+html.t2{--base:22px} html.t3{--base:25px}
+html.contraste{--verde:#003b2c;--verde-osc:#000;--gris:#1b1b1b;--linea:#3a3a3a;--fondo:#fff;--verde-claro:#fff;--tinta:#000;--oro:#5c3d00}
+html.contraste .tarjeta,html.contraste .aviso,html.contraste input,html.contraste select,html.contraste textarea{border-width:2px;border-color:#000}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--tinta);background:var(--fondo);line-height:1.55;font-size:1rem}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:500;line-height:1.2;margin:0 0 .4em;color:var(--verde-osc)}
+html.contraste h1,html.contraste h2,html.contraste h3{color:#000}
+h1{font-size:1.85rem} h2{font-size:1.4rem} h3{font-size:1.15rem}
+p{margin:.3em 0 .8em}
 a{color:var(--verde)}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-:focus-visible{outline:3px solid var(--oro);outline-offset:2px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:48px;padding:.55em 1.1em;border-radius:10px;border:2px solid var(--verde);background:var(--verde);color:#fff;font-weight:700}
+svg{flex:none}
+:focus-visible{outline:4px solid var(--oro);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:54px;padding:.6em 1.2em;border-radius:12px;border:2px solid var(--verde);background:var(--verde);color:#fff;font-weight:700;text-decoration:none;text-align:center;line-height:1.25}
 .btn:hover{background:var(--verde-osc)}
 .btn.sec{background:#fff;color:var(--verde)}
 .btn.sec:hover{background:var(--verde-claro)}
 .btn.peligro{background:#fff;color:var(--rojo);border-color:var(--rojo)}
-.btn.chico{min-height:40px;padding:.3em .8em;font-size:.9rem}
-.btn:disabled{opacity:.55;cursor:not-allowed}
-.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:.6rem;padding:.6rem 1rem;background:#fff;border-bottom:1px solid var(--linea)}
+.btn.chico{min-height:48px;padding:.4em .9em;font-size:.95rem}
+.btn.ancho{width:100%}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+/* barra superior */
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:.5rem;padding:.55rem 1rem;background:#fff;border-bottom:1px solid var(--linea)}
 .logo{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:1.25rem;color:var(--verde);text-decoration:none;margin-right:auto}
-.logo span.m{display:grid;place-items:center;width:36px;height:36px;border-radius:9px;background:var(--verde);color:#fff;font-size:1.4rem}
-.topbar .btn{min-height:42px}
-.layout{display:grid;grid-template-columns:250px 1fr;min-height:calc(100vh - 62px)}
-nav.lado{background:#fff;border-right:1px solid var(--linea);padding:1rem .7rem;display:flex;flex-direction:column;gap:.3rem}
-nav.lado button{display:flex;align-items:center;gap:.6rem;width:100%;text-align:left;background:none;border:0;border-radius:10px;padding:.75rem .8rem;color:var(--tinta);font-weight:600;min-height:48px}
-nav.lado button[aria-current="page"]{background:var(--verde-claro);color:var(--verde)}
-nav.lado button:hover{background:var(--fondo)}
-nav.lado .quien{padding:.6rem .8rem 1rem;border-bottom:1px solid var(--linea);margin-bottom:.5rem}
-nav.lado .quien small{color:var(--gris)}
-.badge{display:inline-block;min-width:1.5em;padding:0 .45em;border-radius:99px;background:var(--verde);color:#fff;font-size:.8rem;text-align:center;margin-left:auto}
-main{padding:1.5rem clamp(1rem,3vw,2.5rem) 5rem;max-width:1100px;width:100%}
-.sub{color:var(--gris);margin-top:-.2rem}
-.tarjeta{background:#fff;border:1px solid var(--linea);border-radius:var(--radio);padding:1.2rem 1.3rem;margin-bottom:1rem}
-.aviso{display:flex;gap:.8rem;align-items:flex-start;border-radius:var(--radio);padding:1rem 1.2rem;margin-bottom:1rem;background:var(--verde-claro);border:1px solid var(--verde-medio)}
-.aviso.alerta{background:var(--rojo-claro);border-color:#f0c4bf}
-.aviso.info{background:var(--azul-claro);border-color:#c9d8ef}
-.ico{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--verde);color:#fff;font-weight:800}
-.aviso.alerta .ico{background:var(--rojo)} .aviso.info .ico{background:var(--azul)}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.2rem}
-.dato{background:#fff;border:1px solid var(--linea);border-radius:var(--radio);padding:1rem 1.2rem}
-.dato b{display:block;font-family:Georgia,serif;font-size:2rem;font-weight:600}
-.dato span{color:var(--gris);font-size:.9rem}
-.vac .emp{font-size:.8rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--verde)}
-.vac .fila{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}
-.compat{text-align:right;color:var(--verde);font-weight:800;font-size:1.3rem;white-space:nowrap}
-.compat small{display:block;font-size:.75rem;color:var(--gris);font-weight:500}
-.meta{color:var(--gris);font-size:.92rem;margin:.3rem 0 .5rem}
-.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0}
-.chip{background:var(--fondo);border:1px solid var(--linea);border-radius:8px;padding:.1rem .55rem;font-size:.85rem;font-weight:600}
+.logo span.m{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:var(--verde);color:#fff;font-size:1.5rem;line-height:1}
+.topbar .btn{min-height:48px;padding:.3em .8em;font-size:.95rem;white-space:nowrap}
+/* estructura */
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:calc(100vh - 64px)}
+nav.lado{background:#fff;border-right:1px solid var(--linea);padding:1rem .7rem;display:flex;flex-direction:column;gap:.35rem}
+nav.lado button{display:flex;align-items:center;gap:.7rem;width:100%;text-align:left;background:none;border:0;border-radius:12px;padding:.75rem .85rem;color:var(--tinta);font-weight:700;min-height:56px}
+nav.lado button[aria-current="page"]{background:var(--verde);color:#fff}
+nav.lado button:hover:not([aria-current="page"]){background:var(--verde-claro)}
+nav.lado .quien{padding:.4rem .8rem 1rem;border-bottom:1px solid var(--linea);margin-bottom:.4rem}
+nav.lado .quien small{color:var(--gris);font-size:.9rem}
+nav.lado .sh{display:none}
+.badge{display:inline-grid;place-items:center;min-width:1.6em;height:1.6em;padding:0 .4em;border-radius:99px;background:var(--rojo);color:#fff;font-size:.8rem;margin-left:auto}
+main{padding:1.6rem clamp(1rem,3vw,2.5rem) 5rem;max-width:960px;width:100%}
+.intro{color:var(--gris);font-size:1.05rem;margin-top:-.1rem;margin-bottom:1.2rem}
+.tarjeta{background:#fff;border:1px solid var(--linea);border-radius:var(--radio);padding:1.2rem 1.3rem;margin-bottom:1.1rem}
+.aviso{display:flex;gap:.9rem;align-items:flex-start;border-radius:var(--radio);padding:1rem 1.2rem;margin-bottom:1.1rem;background:var(--verde-claro);border:1px solid var(--verde-medio)}
+.aviso.alerta{background:var(--rojo-claro);border-color:#eec0ba}
+.aviso.info{background:var(--azul-claro);border-color:#c6d6ee}
+.aviso.oro{background:var(--oro-claro);border-color:#ecd7a6}
+.ico{flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--verde);color:#fff}
+.aviso.alerta .ico{background:var(--rojo)} .aviso.info .ico{background:var(--azul)} .aviso.oro .ico{background:var(--oro)}
+.aviso .btn{margin-top:.6rem}
+/* accesos grandes del inicio */
+.grandes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem;margin-bottom:1.4rem}
+.grande{display:flex;flex-direction:column;align-items:flex-start;gap:.4rem;text-align:left;background:#fff;border:2px solid var(--verde-medio);border-radius:var(--radio);padding:1.1rem 1.1rem 1rem;min-height:130px;color:var(--tinta)}
+.grande:hover{border-color:var(--verde);background:var(--verde-claro)}
+.grande .gi{display:grid;place-items:center;width:46px;height:46px;border-radius:12px;background:var(--verde);color:#fff}
+.grande b{font-size:1.1rem}
+.grande span{color:var(--gris);font-size:.95rem}
+.resumen{font-size:1.1rem;background:#fff;border-left:6px solid var(--verde);border-radius:8px;padding:.8rem 1rem;margin-bottom:1.2rem}
+/* guía */
+details.guia{background:#fff;border:2px dashed var(--verde-medio);border-radius:var(--radio);margin-bottom:1.2rem}
+details.guia summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:.6rem;padding:.9rem 1.1rem;font-weight:700;color:var(--verde);min-height:54px}
+details.guia summary::-webkit-details-marker{display:none}
+details.guia summary::after{content:"Ver";margin-left:auto;font-size:.9rem;border:2px solid var(--verde);border-radius:8px;padding:.1rem .6rem}
+details.guia[open] summary::after{content:"Ocultar"}
+details.guia ol{margin:0;padding:0 1.2rem 1rem 3rem}
+details.guia li{margin:.35rem 0}
+/* tarjeta de trabajo */
+.vac .quien-pub{font-weight:700;color:var(--verde);display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+.vac h3{font-size:1.3rem;margin:.35rem 0 .5rem}
+.datos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.3rem 1.2rem;margin:.6rem 0;padding:0;list-style:none}
+.datos li{display:flex;flex-direction:column}
+.datos li span{font-size:.85rem;color:var(--gris);font-weight:700}
+.datos li b{font-weight:600}
+.queda{display:inline-flex;align-items:center;gap:.4rem;font-weight:700;border-radius:10px;padding:.25rem .7rem;font-size:.95rem}
+.queda.q1{background:var(--verde);color:#fff} .queda.q2{background:var(--verde-claro);color:var(--verde);border:1px solid var(--verde-medio)} .queda.q3{background:var(--fondo);color:var(--gris);border:1px solid var(--linea)}
+.pie{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between;border-top:1px solid var(--linea);padding-top:.9rem;margin-top:.6rem}
+.pago{font-weight:800;font-size:1.25rem}
+.acciones{display:flex;gap:.6rem;flex-wrap:wrap}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.4rem 0}
+.chip{display:inline-flex;align-items:center;gap:.3rem;background:var(--fondo);border:1px solid var(--linea);border-radius:8px;padding:.15rem .6rem;font-size:.9rem;font-weight:600}
 .chip.ok{background:var(--verde-claro);border-color:var(--verde-medio);color:var(--verde)}
-.chip.pend{background:#fff6e0;border-color:#efd9a6;color:#7a5300}
-.chip.no{background:var(--rojo-claro);border-color:#f0c4bf;color:var(--rojo)}
-.pie{display:flex;justify-content:space-between;align-items:center;gap:1rem;border-top:1px solid var(--linea);padding-top:.8rem;margin-top:.6rem;flex-wrap:wrap}
-.pago{font-weight:800}
-.acciones{display:flex;gap:.5rem;flex-wrap:wrap}
-.filtros{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:.8rem}
-label{display:block;font-weight:700;margin-bottom:.3rem}
-input,select,textarea{width:100%;min-height:50px;padding:.6rem .8rem;border:2px solid var(--linea);border-radius:10px;background:#fff;color:var(--tinta)}
-textarea{min-height:110px}
-input:focus,select:focus,textarea:focus{border-color:var(--verde);outline:none}
-.campo{margin-bottom:1rem}
-.campo .ayuda{color:var(--gris);font-size:.85rem;margin-top:.25rem}
-.campo .error{color:var(--rojo);font-weight:700;font-size:.9rem;margin-top:.25rem}
-.check{display:flex;gap:.6rem;align-items:flex-start;font-weight:500}
-.check input{width:24px;min-height:24px;height:24px;flex:none;margin-top:.15rem}
+.chip.pend{background:var(--oro-claro);border-color:#ecd7a6;color:#6b4a06}
+.chip.no{background:var(--rojo-claro);border-color:#eec0ba;color:var(--rojo)}
+/* filtros rápidos */
+.rapidos{display:flex;flex-wrap:wrap;gap:.6rem;margin:.8rem 0}
+.rapidos button{min-height:50px;padding:.4rem 1rem;border-radius:99px;border:2px solid var(--verde);background:#fff;color:var(--verde);font-weight:700}
+.rapidos button[aria-pressed="true"]{background:var(--verde);color:#fff}
+details.mas summary{cursor:pointer;font-weight:700;color:var(--verde);padding:.5rem 0;min-height:48px;display:flex;align-items:center}
+.filtros{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem}
+/* formularios */
+label{display:block;font-weight:700;margin-bottom:.35rem}
+input,select,textarea{width:100%;min-height:56px;padding:.65rem .9rem;border:2px solid var(--linea);border-radius:12px;background:#fff;color:var(--tinta)}
+textarea{min-height:120px}
+input:focus,select:focus,textarea:focus{border-color:var(--verde);outline:none;box-shadow:0 0 0 3px var(--verde-medio)}
+.campo{margin-bottom:1.1rem}
+.campo .ayuda{color:var(--gris);font-size:.92rem;margin-top:.3rem}
+.campo .error{display:flex;gap:.4rem;color:var(--rojo);font-weight:700;font-size:.95rem;margin-top:.35rem}
+.check{display:flex;gap:.7rem;align-items:flex-start;font-weight:500}
+.check input{width:28px;min-height:28px;height:28px;flex:none;margin-top:.1rem;accent-color:var(--verde)}
+.opciones{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}
+.opciones label{display:flex;align-items:center;gap:.6rem;border:2px solid var(--linea);border-radius:12px;padding:.55rem .8rem;font-weight:600;margin:0;min-height:54px;background:#fff}
+.opciones label:has(input:checked){border-color:var(--verde);background:var(--verde-claro)}
+.opciones input{width:26px;min-height:26px;height:26px;accent-color:var(--verde)}
+fieldset{border:0;padding:0;margin:0 0 1.1rem}
+legend{font-weight:700;margin-bottom:.5rem;padding:0}
+.seccion{font-family:Georgia,serif;font-size:1.2rem;color:var(--verde-osc);margin:1.2rem 0 .6rem;display:flex;gap:.6rem;align-items:center}
+.seccion i{font-style:normal;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--verde);color:#fff;font-family:system-ui,sans-serif;font-size:1rem;font-weight:800}
 /* acceso */
-.acceso{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 62px)}
+.acceso{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);min-height:calc(100vh - 64px)}
 .acceso .izq{background:var(--verde-osc);color:#fff;padding:3rem clamp(1.5rem,5vw,4rem);display:flex;flex-direction:column;justify-content:center}
-.acceso .izq h1{font-size:clamp(2.2rem,4vw,3.4rem)}
-.acceso .izq .k{letter-spacing:.12em;font-weight:800;font-size:.85rem;color:#a9dcc5}
-.acceso .izq ul{list-style:none;padding:0;margin:1.5rem 0}
-.acceso .izq li{display:flex;gap:.7rem;align-items:center;margin:.6rem 0;font-weight:600}
-.acceso .izq li i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#a9dcc5;color:var(--verde-osc);font-style:normal;font-weight:800}
-.tel{border:1px solid #6aa892;border-radius:12px;padding:1rem;display:flex;gap:.8rem;align-items:center}
-.acceso .der{padding:2.5rem clamp(1.5rem,5vw,4rem);background:#fff}
-.roles{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.2rem}
-.rol{display:flex;gap:.7rem;align-items:center;text-align:left;padding:.9rem;border:2px solid var(--linea);border-radius:12px;background:#fff;min-height:72px}
-.rol[aria-pressed="true"]{border-color:var(--verde);background:var(--verde-claro)}
-.rol .ini{display:grid;place-items:center;width:42px;height:42px;border-radius:9px;background:var(--verde);color:#fff;font-weight:800;flex:none}
-.tabs{display:flex;border-bottom:2px solid var(--linea);margin-bottom:1.2rem}
-.tabs button{flex:1;background:none;border:0;padding:.8rem;font-weight:700;color:var(--gris);border-bottom:4px solid transparent;margin-bottom:-2px;min-height:52px}
+.acceso .izq h1{font-size:clamp(2.1rem,4vw,3.2rem);color:#fff}
+.acceso .izq ul{list-style:none;padding:0;margin:1.4rem 0}
+.acceso .izq li{display:flex;gap:.7rem;align-items:center;margin:.7rem 0;font-weight:600;font-size:1.05rem}
+.acceso .izq li i{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#a9dcc5;color:var(--verde-osc)}
+.tel{border:1px solid #6aa892;border-radius:14px;padding:1rem;display:flex;gap:.8rem;align-items:center}
+.acceso .der{padding:2.2rem clamp(1.2rem,5vw,4rem);background:#fff}
+.paso-t{font-size:.95rem;font-weight:700;color:var(--verde);margin:0 0 .3rem}
+.roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin-bottom:1.3rem}
+.rol{display:flex;gap:.8rem;align-items:center;text-align:left;padding:1rem;border:2px solid var(--linea);border-radius:14px;background:#fff;min-height:84px;color:var(--tinta)}
+.rol[aria-pressed="true"]{border-color:var(--verde);background:var(--verde-claro);box-shadow:inset 0 0 0 2px var(--verde)}
+.rol .ini{display:grid;place-items:center;width:46px;height:46px;border-radius:12px;background:var(--verde);color:#fff;flex:none}
+.rol b{font-size:1.05rem}
+.rol small{color:var(--gris);font-size:.9rem}
+.tabs{display:flex;border-bottom:2px solid var(--linea);margin-bottom:1.3rem}
+.tabs button{flex:1;background:none;border:0;padding:.8rem;font-weight:700;color:var(--gris);border-bottom:5px solid transparent;margin-bottom:-2px;min-height:56px;font-size:1.05rem}
 .tabs button[aria-selected="true"]{color:var(--verde);border-color:var(--verde)}
-.pasos{display:flex;gap:.5rem;margin-bottom:1rem}
-.pasos span{flex:1;height:8px;border-radius:9px;background:var(--linea)}
+.pasos{display:flex;gap:.5rem;margin-bottom:.6rem}
+.pasos span{flex:1;height:10px;border-radius:9px;background:var(--linea)}
 .pasos span.on{background:var(--verde)}
-.demo{margin-top:1.4rem;padding:1rem;border:1px dashed var(--verde);border-radius:12px;background:var(--verde-claro)}
+/* progreso de solicitud */
+.progreso{margin:.7rem 0}
+.progreso .t{display:flex;justify-content:space-between;gap:.5rem;font-weight:700;flex-wrap:wrap}
+.progreso .t span{color:var(--gris);font-weight:600}
+.barra{height:14px;background:var(--fondo);border:1px solid var(--linea);border-radius:9px;overflow:hidden;margin-top:.35rem}
+.barra i{display:block;height:100%;background:var(--verde)}
+.sigue{display:flex;gap:.7rem;background:var(--oro-claro);border:1px solid #ecd7a6;border-radius:12px;padding:.8rem 1rem;margin:.7rem 0}
+.sigue b{display:block}
 /* modal */
-.velo{position:fixed;inset:0;background:rgba(10,30,24,.55);display:grid;place-items:center;z-index:50;padding:1rem}
-.modal{background:#fff;border-radius:16px;max-width:640px;width:100%;max-height:90vh;overflow:auto;padding:1.5rem}
+.velo{position:fixed;inset:0;background:rgba(10,30,24,.6);display:grid;place-items:center;z-index:50;padding:1rem}
+.modal{outline:none;background:#fff;border-radius:18px;max-width:640px;width:100%;max-height:90vh;overflow:auto;padding:1.4rem 1.5rem 1.6rem}
 .modal .cerrar{display:flex;margin:0 0 .6rem auto}
-.toast{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);background:var(--tinta);color:#fff;padding:.9rem 1.3rem;border-radius:12px;z-index:60;max-width:90vw;font-weight:600;box-shadow:0 6px 24px rgba(0,0,0,.25)}
-/* chat */
-.chat{display:grid;grid-template-columns:280px 1fr;gap:1rem}
-.conv{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--linea);border-radius:12px;padding:.8rem;margin-bottom:.5rem}
+.menu-cuenta{display:grid;gap:.6rem}
+.menu-cuenta .btn{justify-content:flex-start;text-align:left}
+.menu-cuenta hr{border:0;border-top:1px solid var(--linea);margin:.5rem 0}
+.toast{position:fixed;left:50%;top:76px;transform:translateX(-50%);background:var(--tinta);color:#fff;padding:1rem 1.3rem;border-radius:14px;z-index:60;width:min(92vw,560px);font-weight:600;font-size:1.05rem;box-shadow:0 8px 28px rgba(0,0,0,.28);display:flex;gap:.7rem;align-items:center}
+/* mensajes */
+.chat{display:grid;grid-template-columns:290px minmax(0,1fr);gap:1rem}
+.conv{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--linea);border-radius:14px;padding:.9rem;margin-bottom:.5rem;color:var(--tinta);min-height:64px}
 .conv[aria-current="true"]{border:2px solid var(--verde);background:var(--verde-claro)}
-.burbujas{height:380px;overflow:auto;display:flex;flex-direction:column;gap:.5rem;padding:.8rem;background:var(--fondo);border-radius:12px;margin-bottom:.7rem}
-.bur{max-width:78%;padding:.6rem .9rem;border-radius:14px;background:#fff;border:1px solid var(--linea)}
+.burbujas{height:380px;overflow:auto;display:flex;flex-direction:column;gap:.6rem;padding:.9rem;background:var(--fondo);border-radius:14px;margin-bottom:.8rem}
+.bur{max-width:82%;padding:.7rem 1rem;border-radius:16px;background:#fff;border:1px solid var(--linea)}
 .bur.yo{align-self:flex-end;background:var(--verde);color:#fff;border-color:var(--verde)}
-.bur.sis{align-self:center;background:#fff6e0;border-color:#efd9a6;font-size:.9rem}
-.bur small{display:block;opacity:.75;font-size:.75rem}
+.bur.sis{align-self:center;background:var(--oro-claro);border-color:#ecd7a6;font-size:.95rem;max-width:95%}
+.bur small{display:block;opacity:.8;font-size:.8rem;margin-top:.2rem}
 .linea{display:flex;gap:.5rem}
-.estrellas button{background:none;border:0;font-size:2.2rem;color:#c8c8c8;padding:0 .1rem;min-height:48px}
+.estrellas{display:flex;gap:.2rem}
+.estrellas button{background:none;border:0;padding:.1rem;min-height:56px;min-width:56px;color:#bdbdbd}
 .estrellas button.on{color:var(--oro)}
-.barra{height:12px;background:var(--fondo);border-radius:9px;overflow:hidden;flex:1}
-.barra i{display:block;height:100%;background:var(--oro)}
+.est{color:var(--oro);letter-spacing:.05em}
 table{width:100%;border-collapse:collapse}
-th,td{text-align:left;padding:.6rem;border-bottom:1px solid var(--linea);vertical-align:top}
-th{font-size:.85rem;color:var(--gris)}
-.linea-tiempo{list-style:none;padding:0;margin:.6rem 0;display:flex;flex-wrap:wrap;gap:.3rem}
-.linea-tiempo li{font-size:.8rem;padding:.2rem .55rem;border-radius:99px;background:var(--fondo);border:1px solid var(--linea);color:var(--gris)}
-.linea-tiempo li.hecho{background:var(--verde);color:#fff;border-color:var(--verde)}
-.contrato{border:2px solid var(--verde);border-radius:14px;padding:1.2rem;background:#fcfffd;font-size:.95rem}
-.oculto{display:none!important}
+th,td{text-align:left;padding:.65rem .5rem;border-bottom:1px solid var(--linea);vertical-align:top}
+th{color:var(--gris);font-weight:700;width:38%}
+.contrato{border:2px solid var(--verde);border-radius:14px;padding:1.2rem;background:#fcfffd}
+.contrato .resumen-c{background:var(--verde-claro);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem}
 .sr{position:absolute;left:-9999px}
-footer.demo-pie{font-size:.85rem;color:var(--gris);padding:1rem;text-align:center}
 @media (max-width:860px){
-  .layout{grid-template-columns:1fr}
-  nav.lado{position:fixed;bottom:0;left:0;right:0;z-index:30;flex-direction:row;overflow-x:auto;padding:.3rem;border-right:0;border-top:1px solid var(--linea)}
-  nav.lado .quien,nav.lado .salir{display:none}
-  nav.lado button{flex-direction:column;gap:.1rem;font-size:.72rem;min-width:82px;justify-content:center;text-align:center;padding:.4rem}
-  nav.lado .badge{margin:0}
-  .acceso{grid-template-columns:1fr}
-  .grid3,.filtros,.roles{grid-template-columns:1fr}
-  .chat{grid-template-columns:1fr}
-  .topbar .txt{display:none}
-  .topbar{gap:.35rem;padding:.5rem .6rem}
-  .topbar .btn{min-height:44px;min-width:44px;padding:.3em .6em}
-  .logo{font-size:1.05rem}
-  .logo span.m{width:30px;height:30px}
-  main{padding-bottom:7rem}
+  .layout{grid-template-columns:minmax(0,1fr)}
+  nav.lado{position:fixed;bottom:0;left:0;right:0;z-index:30;flex-direction:row;gap:0;padding:.25rem .2rem calc(.25rem + env(safe-area-inset-bottom));border-right:0;border-top:2px solid var(--linea);box-shadow:0 -4px 16px rgba(0,0,0,.08)}
+  nav.lado .quien{display:none}
+  nav.lado button{flex:1;flex-direction:column;justify-content:center;gap:.2rem;padding:.35rem 0;min-height:66px;text-align:center;border-radius:10px;line-height:1.15;position:relative}
+  nav.lado .lg{display:none}
+  nav.lado .sh{display:block;font-size:13.5px;white-space:nowrap;letter-spacing:-.01em}
+  nav.lado .badge{position:absolute;top:.2rem;right:calc(50% - 1.9rem);margin:0}
+  main{padding-bottom:8rem}
+  .acceso{grid-template-columns:minmax(0,1fr)}
+  .acceso .izq{padding:1.6rem 1.2rem}
+  .acceso .izq h1{font-size:1.9rem}
+  .grandes,.filtros,.roles{grid-template-columns:minmax(0,1fr)}
+  .grande{min-height:0;flex-direction:row;align-items:center}
+  .chat{grid-template-columns:minmax(0,1fr)}
+  .datos{grid-template-columns:minmax(0,1fr)}
+  .pie .acciones,.pie .acciones .btn{width:100%}
+  .topbar{padding:.45rem .5rem;gap:.3rem}
+  .topbar .btn{padding:.25em .5em;min-height:48px;gap:.3em}
+  .logo span.m{width:34px;height:34px}
 }
+@media (max-width:470px){
+  .logo .txt{display:none}
+  .opciones{grid-template-columns:minmax(0,1fr)}
+  .topbar .btn{font-size:15px}
+  .topbar .btn svg{width:20px;height:20px}
+}
+@media (prefers-reduced-motion:no-preference){ .btn,.grande,nav.lado button{transition:background .15s} }
 </style>
 </head>
 <body>
 <header class="topbar">
-  <a href="#" class="logo" id="logo" aria-label="ReImpulso, inicio"><span class="m" aria-hidden="true">+</span>ReImpulso</a>
-  <button class="btn sec" id="bTexto" aria-label="Cambiar tamaño de letra"><b>Aa</b><span class="txt">Letra más grande</span></button>
-  <button class="btn sec" id="bContraste" aria-pressed="false" aria-label="Alto contraste"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg><span class="txt">Alto contraste</span></button>
-  <button class="btn sec" id="bAyuda"><span aria-hidden="true">?</span><span class="txt">Necesito ayuda</span></button>
+  <a href="#" class="logo" id="logo" aria-label="ReImpulso, ir al inicio"><span class="m" aria-hidden="true">+</span><span class="txt">ReImpulso</span></a>
+  <button class="btn sec" id="bTexto" aria-label="Cambiar el tamaño de la letra"><b>Aa</b><span>Letra</span></button>
+  <button class="btn sec" id="bAyuda"><span id="icAyuda"></span><span>Ayuda</span></button>
+  <button class="btn" id="bCuenta" hidden><span id="icCuenta"></span><span>Mi cuenta</span></button>
 </header>
 <div id="app"></div>
 <div id="vivo" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-/* ================= Datos y almacenamiento ================= */
-const CLAVE = "reimpulso_prototipo_v3";
+{
+/* ================= Íconos (dibujados, sin emojis) ================= */
+const RUTAS = {
+  inicio:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
+  buscar:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/>',
+  lista:'<path d="M9 6h12M9 12h12M9 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/>',
+  mensaje:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+  persona:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',
+  mas:'<path d="M12 5v14M5 12h14"/>',
+  maletin:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2"/><path d="M3 12h18"/>',
+  grupo:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.3-5.5 6.5-5.5s5.7 2 6.5 5.5"/><circle cx="17" cy="9" r="2.8"/><path d="M17.5 14.5c2.2.3 3.6 2 4 4.5"/>',
+  estrella:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+  ayuda:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6"/><path d="M12 17h.01"/>',
+  telefono:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+  salir:'<path d="M15 4h4v16h-4"/><path d="M10 8l-4 4 4 4"/><path d="M6 12h10"/>',
+  reiniciar:'<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/>',
+  check:'<path d="M5 12l5 5 9-10"/>',
+  alerta:'<path d="M12 3l10 18H2z"/><path d="M12 10v4"/><path d="M12 17.5h.01"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7.5h.01"/>',
+  voz:'<path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/>',
+  escudo:'<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+  contraste:'<circle cx="12" cy="12" r="9"/><path d="M12 3v18a9 9 0 0 0 0-18z" fill="currentColor"/>',
+  flecha:'<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>',
+  firma:'<path d="M4 20h16"/><path d="M14.5 4.5l3 3L8 17H5v-3z"/>',
+  dinero:'<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/>',
+  whatsapp:'<path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z"/><path d="M9 9.5c.3 2.2 2.3 4.2 4.5 4.6l1.2-1.1 1.8.8-.4 1.6c-3.6.3-7.1-3.2-6.8-6.8l1.6-.4.8 1.8z"/>'
+};
+const ic = (n, s = 24) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RUTAS[n] || ""}</svg>`;
+const estrellas = n => `<span class="est" aria-label="${n} de 5 estrellas">${"★".repeat(n)}${"☆".repeat(5 - n)}</span>`;
+
+/* ================= Datos y almacenamiento (en el navegador) ================= */
+const CLAVE = "reimpulso_prototipo_v4";
 const MUNICIPIOS = ["Veracruz","Boca del Río","Medellín de Bravo","Alvarado","Xalapa","Coatzacoalcos"];
 const CONURBADA = ["Veracruz","Boca del Río","Medellín de Bravo","Alvarado"];
 const HABILIDADES = ["Administración","Atención a clientes","Contabilidad básica","Captura de datos","Cocina","Costura","Cuidado de niños","Enseñanza y tutorías","Jardinería ligera","Recepción","Ventas","Manualidades","Computación básica","Asesoría en oficios"];
 const ESTADOS = ["Enviada","En revisión","Aceptada","Contrato firmado","En curso","Terminada"];
-const hoy = () => new Date().toISOString();
-const uid = p => p + Math.random().toString(36).slice(2,8);
-const dinero = n => "$" + Number(n).toLocaleString("es-MX") + " MXN";
+const NOMBRE_T = {"Enviada":"Solicitud enviada","En revisión":"La están revisando","Aceptada":"Lo aceptaron","Contrato firmado":"Contrato firmado","En curso":"Trabajando","Terminada":"Terminado y pagado","No seleccionada":"Eligieron a otra persona"};
+const NOMBRE_C = {"Enviada":"Nueva solicitud","En revisión":"En revisión","Aceptada":"Aceptada","Contrato firmado":"Contrato firmado","En curso":"Trabajando","Terminada":"Terminado","No seleccionada":"No seleccionada"};
+const MODALIDAD = {"Presencial":"En persona","Remoto":"Desde casa"};
+const uid = p => p + Math.random().toString(36).slice(2, 8);
+const dinero = n => "$" + Number(n).toLocaleString("es-MX") + " pesos";
 
 function semilla(){
   const t = Date.now(), dia = 864e5;
   return {
-    v:3,
+    v:4,
     usuarios:[
       {id:"u1",rol:"trabajador",nombre:"Carlos Ramírez Ochoa",correo:"carlos@demo.mx",pass:"demo1234",tel:"2291234567",edad:66,municipio:"Boca del Río",
        habilidades:["Administración","Atención a clientes","Contabilidad básica","Computación básica"],modalidad:"Cualquiera",disponibilidad:"Mañanas",
@@ -193,19 +292,19 @@ function semilla(){
        municipio:"Veracruz",giro:"",contacto:"",verificada:true,verif:{identidad:"ok",telefono:"ok"}}
     ],
     vacantes:[
-      {id:"v1",empresaId:"e1",titulo:"Apoyo administrativo en temporada de declaraciones",descripcion:"Ordenar expedientes, capturar datos y atender llamadas de clientes durante la temporada de declaraciones anuales. Se capacita en el sistema del despacho.",
+      {id:"v1",empresaId:"e1",titulo:"Apoyo administrativo en temporada de declaraciones",descripcion:"Ordenar expedientes, capturar datos y atender llamadas de clientes durante la temporada de declaraciones anuales. Le enseñamos a usar el sistema del despacho.",
        municipio:"Boca del Río",modalidad:"Presencial",plazo:"3 meses",horario:"9:00 a 13:00",pago:7200,etiquetas:["Administración","Captura de datos","Atención a clientes"],esfuerzo:"Bajo",estado:"activa",fecha:t-1*dia},
-      {id:"v2",empresaId:"e2",titulo:"Taller de costura para mujeres de la colonia",descripcion:"Impartir un taller de costura básica dos veces por semana. La fundación pone las máquinas y el material.",
-       municipio:"Veracruz",modalidad:"Presencial",plazo:"1 mes",horario:"Martes y jueves 16:00 a 18:00",pago:3200,etiquetas:["Costura","Enseñanza y tutorías","Manualidades"],esfuerzo:"Bajo",estado:"activa",fecha:t-2*dia},
-      {id:"v3",empresaId:"e3",titulo:"Asesor de regularización en matemáticas (en línea)",descripcion:"Asesorías por videollamada a alumnos de secundaria. La escuela agenda las sesiones y presta la plataforma.",
-       municipio:"Xalapa",modalidad:"Remoto",plazo:"3 meses",horario:"Lunes a viernes 17:00 a 19:00",pago:5600,etiquetas:["Enseñanza y tutorías","Computación básica"],esfuerzo:"Bajo",estado:"activa",fecha:t-3*dia},
-      {id:"v4",empresaId:"e1",titulo:"Recepción de documentos (fin de mes)",descripcion:"Recibir y registrar documentos de clientes los últimos cinco días hábiles de cada mes.",
+      {id:"v2",empresaId:"e2",titulo:"Taller de costura para mujeres de la colonia",descripcion:"Enseñar costura básica dos veces por semana. La fundación pone las máquinas y el material.",
+       municipio:"Veracruz",modalidad:"Presencial",plazo:"1 mes",horario:"Martes y jueves de 16:00 a 18:00",pago:3200,etiquetas:["Costura","Enseñanza y tutorías","Manualidades"],esfuerzo:"Bajo",estado:"activa",fecha:t-2*dia},
+      {id:"v3",empresaId:"e3",titulo:"Asesor de matemáticas por videollamada",descripcion:"Dar asesorías por videollamada a alumnos de secundaria. La escuela agenda las clases y le presta la plataforma.",
+       municipio:"Xalapa",modalidad:"Remoto",plazo:"3 meses",horario:"Lunes a viernes de 17:00 a 19:00",pago:5600,etiquetas:["Enseñanza y tutorías","Computación básica"],esfuerzo:"Bajo",estado:"activa",fecha:t-3*dia},
+      {id:"v4",empresaId:"e1",titulo:"Recepción de documentos (fin de mes)",descripcion:"Recibir y anotar los documentos de los clientes los últimos cinco días hábiles de cada mes.",
        municipio:"Boca del Río",modalidad:"Presencial",plazo:"1 semana",horario:"10:00 a 14:00",pago:1800,etiquetas:["Recepción","Atención a clientes"],esfuerzo:"Bajo",estado:"activa",fecha:t-5*dia},
       {id:"v6",empresaId:"e4",titulo:"Clases de regularización de primaria para mi hijo",descripcion:"Mi hijo de 9 años necesita apoyo en matemáticas y lectura. Las clases serían en mi casa, en la colonia Reforma.",
-       municipio:"Veracruz",modalidad:"Presencial",plazo:"1 mes",horario:"Martes y jueves 17:00 a 18:30",pago:1600,etiquetas:["Enseñanza y tutorías"],esfuerzo:"Bajo",estado:"activa",fecha:t-4*36e5},
+       municipio:"Veracruz",modalidad:"Presencial",plazo:"1 mes",horario:"Martes y jueves de 17:00 a 18:30",pago:1600,etiquetas:["Enseñanza y tutorías"],esfuerzo:"Bajo",estado:"activa",fecha:t-4*36e5},
       {id:"v7",empresaId:"e4",titulo:"Arreglo de uniformes escolares",descripcion:"Ajustar 6 pantalones y 4 faldas de uniforme (bastillas y cintura). Puede llevárselos a su casa.",
        municipio:"Veracruz",modalidad:"Presencial",plazo:"1 semana",horario:"Flexible",pago:900,etiquetas:["Costura"],esfuerzo:"Bajo",estado:"activa",fecha:t-8*36e5},
-      {id:"v5",empresaId:"e2",titulo:"Atención telefónica a donantes",descripcion:"Llamar a donantes registrados para agradecer y actualizar sus datos. Guion incluido; se trabaja desde casa.",
+      {id:"v5",empresaId:"e2",titulo:"Llamadas para agradecer a donantes",descripcion:"Llamar por teléfono a donantes para agradecerles y actualizar sus datos. Le damos lo que tiene que decir. Se trabaja desde casa.",
        municipio:"Veracruz",modalidad:"Remoto",plazo:"1 mes",horario:"Flexible, 3 horas al día",pago:3900,etiquetas:["Atención a clientes","Ventas"],esfuerzo:"Bajo",estado:"activa",fecha:t-6*dia}
     ],
     postulaciones:[
@@ -221,7 +320,7 @@ function semilla(){
     resenas:[
       {para:"u1",de:"e1",estrellas:5,texto:"Puntual, ordenado y muy amable con los clientes.",ts:t-31*dia},
       {para:"u1",de:"e2",estrellas:5,texto:"Excelente apoyo en la colecta anual.",ts:t-90*dia},
-      {para:"u1",de:"e3",estrellas:4,texto:"Buen trabajo; le costó un poco la plataforma al inicio.",ts:t-150*dia},
+      {para:"u1",de:"e3",estrellas:4,texto:"Buen trabajo; al principio le costó un poco la plataforma.",ts:t-150*dia},
       {para:"e1",de:"u1",estrellas:5,texto:"Pagaron a tiempo y me explicaron todo con paciencia.",ts:t-31*dia},
       {para:"e1",de:"u3",estrellas:4,texto:"Buen trato.",ts:t-200*dia}
     ],
@@ -229,14 +328,14 @@ function semilla(){
     sesion:null
   };
 }
-let mem = null;
 function cargar(){
-  try{ const s = localStorage.getItem(CLAVE); if(s){ const d = JSON.parse(s); if(d && d.v===3) return d; } }catch(e){}
+  try{ const s = localStorage.getItem(CLAVE); if(s){ const d = JSON.parse(s); if(d && d.v === 4) return d; } }catch(e){}
   return semilla();
 }
 function guardar(){ try{ localStorage.setItem(CLAVE, JSON.stringify(db)); }catch(e){} }
 let db = cargar();
-let ui = {rolAcceso:"trabajador", pestaña:"entrar", paso:1, borrador:{}, vista:"inicio", conv:null, filtros:{q:"",mun:"Todas",plazo:"Cualquiera",mod:"Cualquiera"}, errores:{}};
+const FILTROS0 = {q:"", cerca:"todos", mun:"Todas", plazo:"Cualquiera"};
+let ui = {rolAcceso:"trabajador", pestaña:"entrar", paso:1, borrador:{}, vista:"inicio", conv:null, filtros:{...FILTROS0}, errores:{}};
 
 /* ================= Utilidades ================= */
 const $ = s => document.querySelector(s);
@@ -244,25 +343,31 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 const usuario = id => db.usuarios.find(u => u.id === id);
 const yo = () => db.sesion ? usuario(db.sesion) : null;
 const vacante = id => db.vacantes.find(v => v.id === id);
+const post = id => db.postulaciones.find(x => x.id === id);
+const pnombre = u => u.nombre.split(" ")[0];
 function toast(msg){
   document.querySelectorAll(".toast").forEach(t => t.remove());
-  const d = document.createElement("div"); d.className = "toast"; d.textContent = msg; document.body.appendChild(d);
-  $("#vivo").textContent = msg; setTimeout(() => d.remove(), 4200);
+  const d = document.createElement("div"); d.className = "toast"; d.setAttribute("role", "status");
+  d.innerHTML = ic("check") + `<span>${esc(msg)}</span>`; document.body.appendChild(d);
+  $("#vivo").textContent = msg; setTimeout(() => d.remove(), 6500);
 }
 function promedio(id){
   const r = db.resenas.filter(x => x.para === id);
-  return r.length ? {prom:(r.reduce((a,b)=>a+b.estrellas,0)/r.length), n:r.length} : {prom:0,n:0};
+  return r.length ? {prom: r.reduce((a, b) => a + b.estrellas, 0) / r.length, n: r.length} : {prom: 0, n: 0};
 }
 function hace(ts){
-  const m = Math.round((Date.now()-ts)/6e4);
+  const m = Math.round((Date.now() - ts) / 6e4);
   if(m < 60) return m <= 1 ? "hace un momento" : `hace ${m} minutos`;
-  const h = Math.round(m/60); if(h < 24) return `hace ${h} h`;
-  const d = Math.round(h/24); return d === 1 ? "ayer" : `hace ${d} días`;
+  const h = Math.round(m / 60); if(h < 24) return h === 1 ? "hace 1 hora" : `hace ${h} horas`;
+  const d = Math.round(h / 24); return d === 1 ? "ayer" : `hace ${d} días`;
 }
 function verificado(u){ return u.verif.identidad === "ok" && u.verif.telefono === "ok"; }
 const esPart = u => u && u.tipo === "particular";
 function contrVerif(e){ return esPart(e) ? verificado(e) : e.verificada; }
-function sello(e){ return contrVerif(e) ? `<span class="chip ok" style="text-transform:none">✓ ${esPart(e)?"Persona verificada":"Empresa verificada"}</span>` : `<span class="chip pend" style="text-transform:none">${esPart(e)?"Persona":"Empresa"} por verificar</span>`; }
+function sello(e){
+  return contrVerif(e) ? `<span class="chip ok">${ic("check", 16)} ${esPart(e) ? "Persona verificada" : "Empresa verificada"}</span>`
+                       : `<span class="chip pend">${esPart(e) ? "Persona" : "Empresa"} por verificar</span>`;
+}
 function compatibilidad(u, v){
   let p = 0;
   const comunes = v.etiquetas.filter(e => u.habilidades.includes(e)).length;
@@ -277,129 +382,197 @@ function compatibilidad(u, v){
   if(verificado(u)) p += 5;
   return Math.max(10, Math.min(99, p));
 }
-function chipVerif(e){
-  return e === "ok" ? '<span class="chip ok">✓ Verificado</span>' : e === "revision" ? '<span class="chip pend">En revisión</span>' : '<span class="chip no">Pendiente</span>';
+function queda(c){
+  const [cl, t] = c >= 75 ? ["q1", "Le queda muy bien"] : c >= 50 ? ["q2", "Le queda bien"] : ["q3", "Le queda poco"];
+  return `<span class="queda ${cl}">${t} (${c} %)</span>`;
 }
+function chipVerif(e){
+  return e === "ok" ? `<span class="chip ok">${ic("check", 16)} Listo</span>` : e === "revision" ? '<span class="chip pend">Revisando…</span>' : '<span class="chip no">Falta</span>';
+}
+const intro = t => `<p class="intro">${t}</p>`;
+const guia = (titulo, pasos, abierta) => `<details class="guia" ${abierta ? "open" : ""}><summary>${ic("info")} ${titulo}</summary><ol>${pasos.map(p => `<li>${p}</li>`).join("")}</ol></details>`;
 
-/* ================= Accesibilidad global ================= */
+/* ================= Letra, contraste y ayuda ================= */
 let tam = 1;
-try{ tam = Number(localStorage.getItem(CLAVE+"_t")) || 1; }catch(e){}
-function aplicarTam(){ document.documentElement.classList.remove("t2","t3"); if(tam>1) document.documentElement.classList.add("t"+tam); }
+try{ tam = Number(localStorage.getItem(CLAVE + "_t")) || 1; }catch(e){}
+function aplicarTam(){ document.documentElement.classList.remove("t2", "t3"); if(tam > 1) document.documentElement.classList.add("t" + tam); }
 aplicarTam();
-$("#bTexto").onclick = () => { tam = tam % 3 + 1; aplicarTam(); try{localStorage.setItem(CLAVE+"_t", tam);}catch(e){} toast(["Letra normal","Letra grande","Letra muy grande"][tam-1]); };
-$("#bContraste").onclick = e => { const on = document.documentElement.classList.toggle("contraste"); e.currentTarget.setAttribute("aria-pressed", on); };
+try{ if(localStorage.getItem(CLAVE + "_c") === "1") document.documentElement.classList.add("contraste"); }catch(e){}
+function alternarContraste(){
+  const on = document.documentElement.classList.toggle("contraste");
+  try{ localStorage.setItem(CLAVE + "_c", on ? "1" : "0"); }catch(e){}
+  toast(on ? "Ahora se ve con más contraste." : "Volvió a los colores normales.");
+}
+$("#icAyuda").outerHTML = ic("ayuda");
+$("#icCuenta").outerHTML = ic("persona");
+$("#bTexto").onclick = () => { tam = tam % 3 + 1; aplicarTam(); try{ localStorage.setItem(CLAVE + "_t", tam); }catch(e){} toast(["Letra normal", "Letra grande", "Letra muy grande"][tam - 1]); };
 $("#bAyuda").onclick = () => modal(`
   <h2>¿Necesita ayuda?</h2>
-  <p>Una persona del equipo ReImpulso le atiende de lunes a sábado de 8:00 a 20:00.</p>
-  <div class="tarjeta"><b>Llámenos gratis</b><br><span style="font-size:1.6rem;font-weight:800">800 734 6785</span><br><small>Número de demostración</small></div>
-  <div class="tarjeta"><b>Escríbanos por WhatsApp</b><br>229 123 4567</div>
-  <div class="aviso alerta"><span class="ico">!</span><div><b>Cuide su dinero.</b> ReImpulso nunca le pedirá contraseñas, NIP, códigos que le lleguen por mensaje ni depósitos para darle un trabajo.</div></div>`);
-$("#logo").onclick = e => { e.preventDefault(); if(yo()){ ui.vista = "inicio"; render(); } };
+  <p>Una persona de ReImpulso le atiende de lunes a sábado, de 8:00 a 20:00.</p>
+  <div class="aviso"><span class="ico">${ic("telefono")}</span><div><b>Llámenos gratis</b><br><span style="font-size:1.5rem;font-weight:800">800 734 6785</span></div></div>
+  <div class="aviso"><span class="ico">${ic("whatsapp")}</span><div><b>Escríbanos por WhatsApp</b><br><span style="font-size:1.3rem;font-weight:700">229 123 4567</span></div></div>
+  <div class="aviso alerta"><span class="ico">${ic("alerta")}</span><div><b>Cuide su dinero.</b><br>ReImpulso nunca le va a pedir contraseñas, NIP, códigos que le lleguen por mensaje ni dinero para darle un trabajo.</div></div>
+  <button class="btn ancho" data-cerrar>Entendido</button>`);
+$("#bCuenta").onclick = () => menuCuenta();
+$("#logo").onclick = e => { e.preventDefault(); if(yo()) ir("inicio"); };
 function leer(texto){
   try{
-    if(!("speechSynthesis" in window)) return toast("Su navegador no puede leer en voz alta.");
-    speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(texto); u.lang = "es-MX"; u.rate = .92; speechSynthesis.speak(u);
-  }catch(e){ toast("No fue posible leer en voz alta."); }
+    if(!("speechSynthesis" in window)) return toast("Su celular no puede leer en voz alta.");
+    speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(texto); u.lang = "es-MX"; u.rate = .9; speechSynthesis.speak(u);
+  }catch(e){ toast("No se pudo leer en voz alta."); }
 }
 
-/* ================= Modal ================= */
+/* ================= Ventanas (modales) ================= */
 function modal(html, alAbrir){
   cerrarModal();
   const v = document.createElement("div"); v.className = "velo"; v.id = "velo";
-  v.innerHTML = `<div class="modal" role="dialog" aria-modal="true"><button class="btn sec chico cerrar" data-cerrar>Cerrar ✕</button>${html}</div>`;
+  v.innerHTML = `<div class="modal" role="dialog" aria-modal="true"><button class="btn sec chico cerrar" data-cerrar>Cerrar</button>${html}</div>`;
   v.addEventListener("click", e => { if(e.target === v || e.target.closest("[data-cerrar]")) cerrarModal(); });
   document.body.appendChild(v);
-  const f = v.querySelector("input,select,textarea,.btn:not(.cerrar)") || v.querySelector(".btn"); f && f.focus();
+  const caja = v.querySelector(".modal"); caja.tabIndex = -1;
+  const f = v.querySelector("[data-foco]"); (f || caja).focus({preventScroll:true}); caja.scrollTop = 0;
   alAbrir && alAbrir(v);
 }
 function cerrarModal(){ const v = $("#velo"); v && v.remove(); }
 document.addEventListener("keydown", e => { if(e.key === "Escape") cerrarModal(); });
-
-/* ================= Render principal ================= */
-function render(){
-  const u = yo();
-  $("#app").innerHTML = u ? marco(u) : acceso();
-  enlazar();
-  window.scrollTo(0,0);
+function preguntar(texto, si, fn){
+  modal(`<h2>Confirme, por favor</h2><p style="font-size:1.1rem">${texto}</p><div class="acciones"><button class="btn" id="pSi">${esc(si)}</button><button class="btn sec" data-cerrar>No, regresar</button></div>`,
+    m => m.querySelector("#pSi").onclick = () => { cerrarModal(); fn(); });
 }
 
-/* ---------- Acceso / registro ---------- */
+/* ---------- Mi cuenta (siempre arriba, también en celular) ---------- */
+function menuCuenta(){
+  const u = yo(); if(!u) return;
+  const emp = u.rol === "empresa";
+  const tipo = emp ? (esPart(u) ? "Cuenta para contratar (persona)" : "Cuenta de empresa") : "Cuenta de trabajador";
+  const contr = document.documentElement.classList.contains("contraste");
+  modal(`<h2>Mi cuenta</h2><p><b>${esc(u.nombre)}</b><br><span style="color:var(--gris)">${tipo} · ${esc(u.municipio)}</span></p>
+    <div class="menu-cuenta">
+      <button class="btn sec" data-mc="perfil">${ic("persona")} ${emp && !esPart(u) ? "Datos de la empresa" : "Mi perfil y verificación"}</button>
+      <button class="btn sec" data-mc="resenas">${ic("estrella")} Mis calificaciones</button>
+      <button class="btn sec" data-mc="guia">${ic("info")} Ver otra vez cómo funciona</button>
+      <button class="btn sec" data-mc="contraste">${ic("contraste")} ${contr ? "Quitar el alto contraste" : "Ver con más contraste"}</button>
+      <hr>
+      <button class="btn" data-mc="salir" data-salir>${ic("salir")} Cambiar de cuenta (cerrar sesión)</button>
+      <button class="btn peligro" data-mc="reiniciar" id="reiniciar">${ic("reiniciar")} Volver a los datos iniciales</button>
+      <p style="font-size:.9rem;color:var(--gris);margin:0">«Volver a los datos iniciales» borra lo que se haya hecho en este celular o computadora y deja todo como al principio.</p>
+    </div>`, m => m.querySelectorAll("[data-mc]").forEach(b => b.onclick = () => {
+      const a = b.dataset.mc; cerrarModal();
+      if(a === "perfil" || a === "resenas") ir(a);
+      else if(a === "guia") bienvenida(u, true);
+      else if(a === "contraste") alternarContraste();
+      else if(a === "salir") salir();
+      else if(a === "reiniciar") preguntar("¿Quiere volver a los datos iniciales? Se borra todo lo que se haya hecho en este dispositivo.", "Sí, volver al inicio", () => {
+        const s = db.sesion; db = semilla(); db.sesion = usuario(s) ? s : null; guardar(); ui.conv = null; ui.filtros = {...FILTROS0}; ui.vista = "inicio"; render(); toast("Listo. Todo quedó como al principio.");
+      });
+    }));
+}
+function salir(){
+  db.sesion = null; guardar();
+  ui = {...ui, pestaña:"entrar", paso:1, borrador:{}, errores:{}, vista:"inicio", conv:null, filtros:{...FILTROS0}};
+  render(); toast("Cerró su sesión. Puede entrar con otra cuenta.");
+}
+
+/* ---------- Guía de bienvenida (solo la primera vez) ---------- */
+function bienvenida(u, forzar){
+  const k = u.id + "|guia";
+  if(db.avisos[k] && !forzar) return;
+  const emp = u.rol === "empresa";
+  const pasos = emp
+    ? ["<b>Publique lo que necesita</b> con el botón «Publicar». Escriba con palabras sencillas qué hay que hacer, dónde, cuándo y cuánto paga.",
+       "<b>Revise a los interesados</b> en el botón «Interesados». Puede ver su experiencia, sus calificaciones y escribirles.",
+       "<b>Acepte y firme el contrato</b> en la misma pantalla. Después deposite el pago: lo guardamos hasta que el trabajo se termine."]
+    : ["<b>Busque un trabajo</b> con el botón «Trabajos». Le mostramos primero los que mejor le quedan.",
+       "<b>Toque «Me interesa»</b> para enviar su solicitud. En «Mis solicitudes» verá en qué paso va.",
+       "<b>Firme el contrato y trabaje con tranquilidad.</b> El pago ya está guardado y se lo entregamos al terminar."];
+  modal(`<h2>Bienvenido, ${esc(pnombre(u))}</h2><p style="font-size:1.1rem">Así funciona ReImpulso, en tres pasos:</p>
+    <ol style="font-size:1.05rem;padding-left:1.4rem">${pasos.map(p => `<li style="margin:.6rem 0">${p}</li>`).join("")}</ol>
+    <div class="aviso info"><span class="ico">${ic("ayuda")}</span><div>Si tiene dudas, toque <b>«Ayuda»</b> arriba en cualquier momento. Para agrandar la letra, toque <b>«Aa Letra»</b>.</div></div>
+    <button class="btn ancho" id="guiaOk">Entendido, empezar</button>`,
+    m => m.querySelector("#guiaOk").onclick = () => { db.avisos[k] = Date.now(); guardar(); cerrarModal(); });
+}
+
+/* ================= Pantalla principal ================= */
+function render(){
+  const u = yo();
+  $("#bCuenta").hidden = !u;
+  $("#app").innerHTML = u ? marco(u) : acceso();
+  enlazar();
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Entrar / crear cuenta ---------- */
 function acceso(){
-  const r = ui.rolAcceso, emp = r === "empresa", e = ui.errores, b = ui.borrador;
-  const tipo = ui.tipoContr || "particular", part = emp && tipo === "particular";
-  const err = k => e[k] ? `<div class="error">${esc(e[k])}</div>` : "";
+  const emp = ui.rolAcceso === "empresa", e = ui.errores, b = ui.borrador;
+  const part = emp && (ui.tipoContr || "particular") === "particular";
+  const err = k => e[k] ? `<div class="error">${ic("alerta", 20)}<span>${esc(e[k])}</span></div>` : "";
   let form;
   if(ui.pestaña === "entrar"){
-    form = `<h2>Bienvenido de nuevo</h2><p class="sub">Ingrese sus datos para continuar.</p>
+    form = `<h2>Entrar a su cuenta</h2><p class="intro">Escriba el correo y la contraseña con los que se registró.</p>
     <form id="fEntrar" novalidate>
-      <div class="campo"><label for="cCorreo">Correo electrónico</label><input id="cCorreo" type="email" autocomplete="email" value="${esc(b.correo||"")}">${err("correo")}</div>
+      <div class="campo"><label for="cCorreo">Correo electrónico</label><input id="cCorreo" type="email" autocomplete="email" placeholder="ejemplo: nombre@correo.com" value="${esc(b.correo || "")}">${err("correo")}</div>
       <div class="campo"><label for="cPass">Contraseña</label><div class="linea"><input id="cPass" type="password" autocomplete="current-password"><button type="button" class="btn sec" id="verPass">Mostrar</button></div>${err("pass")}</div>
-      <button class="btn" style="width:100%">Entrar a ReImpulso</button>
+      <button class="btn ancho">Entrar ${ic("flecha")}</button>
     </form>
-    <div class="demo"><b>Cuentas de demostración</b> (contraseña: demo1234)<div class="acciones" style="margin-top:.6rem">
-      ${emp ? `<button class="btn sec chico" data-demo="laura@demo.mx">Laura (particular)</button><button class="btn sec chico" data-demo="empresa@demo.mx">Despacho Hernández (empresa)</button><button class="btn sec chico" data-demo="fundacion@demo.mx">Fundación Manos Abiertas</button>`
-            : `<button class="btn sec chico" data-demo="carlos@demo.mx">Carlos, 66 años</button><button class="btn sec chico" data-demo="maria@demo.mx">María Elena, 63 años</button>`}
-    </div></div>`;
+    <p style="margin-top:1rem">¿Olvidó su contraseña? Llámenos gratis al <b>800 734 6785</b> y le ayudamos.</p>`;
   } else if(ui.paso === 1){
-    form = `<div class="pasos" aria-label="Paso 1 de 2"><span class="on"></span><span></span></div>
-    <h2>Crear cuenta – paso 1 de 2</h2><p class="sub">${emp ? "Cuéntenos quién va a contratar." : "Sus datos básicos. Solo le tomará unos minutos."}</p>
-    ${emp ? `<p style="font-weight:700;margin:.2rem 0 .4rem">¿Cómo va a contratar?</p><div class="roles" style="margin-bottom:1rem">
-      <button type="button" class="rol" data-tipo="particular" aria-pressed="${part}"><span class="ini">PA</span><span><b>Como persona</b><br><small>Para mi casa, mi familia o mi negocio pequeño</small></span></button>
-      <button type="button" class="rol" data-tipo="empresa" aria-pressed="${!part}"><span class="ini">EM</span><span><b>Como empresa</b><br><small>Negocio o institución con RFC</small></span></button></div>` : ""}
+    form = `<p class="paso-t">Paso 1 de 2</p><div class="pasos"><span class="on"></span><span></span></div>
+    <h2>Crear cuenta</h2><p class="intro">${emp ? "Cuéntenos quién va a contratar." : "Sus datos básicos. Le tomará unos minutos."}</p>
+    ${emp ? `<p style="font-weight:700;margin:.2rem 0 .5rem">¿Cómo va a contratar?</p><div class="roles">
+      <button type="button" class="rol" data-tipo="particular" aria-pressed="${part}"><span class="ini">${ic("persona")}</span><span><b>Como persona</b><br><small>Para mi casa, mi familia o mi negocio pequeño</small></span></button>
+      <button type="button" class="rol" data-tipo="empresa" aria-pressed="${!part}"><span class="ini">${ic("maletin")}</span><span><b>Como empresa</b><br><small>Negocio o institución con RFC</small></span></button></div>` : ""}
     <form id="fPaso1" novalidate>
-      <div class="campo"><label for="rNombre">${emp && !part ? "Nombre o razón social" : "Nombre completo"}</label><input id="rNombre" value="${esc(b.nombre||"")}" autocomplete="name">${err("nombre")}</div>
-      ${emp && !part ? `<div class="campo"><label for="rRfc">RFC de la empresa</label><input id="rRfc" value="${esc(b.rfc||"")}" maxlength="13" style="text-transform:uppercase"><div class="ayuda">12 caracteres para persona moral o 13 para persona física. Ejemplo: DCH150312AB4</div>${err("rfc")}</div>`
-             : part ? `<div class="aviso info"><span class="ico">i</span><div>Como persona no necesita RFC. Después le pediremos su INE para verificar su identidad, igual que a quien trabaja.</div></div>`
-             : `<div class="campo"><label for="rEdad">Edad</label><input id="rEdad" type="number" inputmode="numeric" min="18" max="110" value="${esc(b.edad||"")}">${err("edad")}</div>`}
-      <div class="campo"><label for="rTel">Teléfono celular (10 dígitos)</label><input id="rTel" inputmode="tel" value="${esc(b.tel||"")}" placeholder="229 123 4567">${err("tel")}</div>
-      <div class="campo"><label for="rCorreo">Correo electrónico</label><input id="rCorreo" type="email" value="${esc(b.correo||"")}">${err("correo")}</div>
-      <button class="btn" style="width:100%">Continuar</button>
+      <div class="campo"><label for="rNombre">${emp && !part ? "Nombre de la empresa" : "Su nombre completo"}</label><input id="rNombre" value="${esc(b.nombre || "")}" autocomplete="name">${err("nombre")}</div>
+      ${emp && !part ? `<div class="campo"><label for="rRfc">RFC de la empresa</label><input id="rRfc" value="${esc(b.rfc || "")}" maxlength="13" style="text-transform:uppercase"><div class="ayuda">Son 12 o 13 letras y números. Ejemplo: DCH150312AB4</div>${err("rfc")}</div>`
+             : part ? `<div class="aviso info"><span class="ico">${ic("info")}</span><div>Como persona no necesita RFC. Después le pediremos una foto de su INE para verificar que es usted.</div></div>`
+             : `<div class="campo"><label for="rEdad">Su edad</label><input id="rEdad" type="number" inputmode="numeric" min="18" max="110" value="${esc(b.edad || "")}">${err("edad")}</div>`}
+      <div class="campo"><label for="rTel">Su número de celular</label><input id="rTel" inputmode="tel" value="${esc(b.tel || "")}" placeholder="ejemplo: 229 123 4567"><div class="ayuda">Son 10 números.</div>${err("tel")}</div>
+      <div class="campo"><label for="rCorreo">Su correo electrónico</label><input id="rCorreo" type="email" value="${esc(b.correo || "")}" placeholder="ejemplo: nombre@correo.com">${err("correo")}</div>
+      <button class="btn ancho">Continuar al paso 2 ${ic("flecha")}</button>
     </form>`;
   } else {
-    form = `<div class="pasos" aria-label="Paso 2 de 2"><span class="on"></span><span class="on"></span></div>
-    <h2>Crear cuenta – paso 2 de 2</h2><p class="sub">${emp ? "Ubicación y contraseña." : "Lo que sabe hacer nos ayuda a recomendarle trabajos."}</p>
+    form = `<p class="paso-t">Paso 2 de 2</p><div class="pasos"><span class="on"></span><span class="on"></span></div>
+    <h2>Crear cuenta</h2><p class="intro">${emp ? "Dónde está y su contraseña." : "Lo que sabe hacer nos ayuda a mostrarle los trabajos que mejor le quedan."}</p>
     <form id="fPaso2" novalidate>
-      <div class="campo"><label for="rMun">Municipio</label><select id="rMun">${MUNICIPIOS.map(m=>`<option ${b.municipio===m?"selected":""}>${m}</option>`).join("")}</select></div>
-      ${part ? "" : emp ? `<div class="campo"><label for="rGiro">Giro o actividad</label><input id="rGiro" value="${esc(b.giro||"")}">${err("giro")}</div>`
-            : `<fieldset class="campo" style="border:0;padding:0"><legend style="font-weight:700;margin-bottom:.4rem">¿Qué sabe hacer? (elija al menos una)</legend>
-                <div class="chips">${HABILIDADES.map(h=>`<label class="check chip" style="padding:.35rem .6rem"><input type="checkbox" name="hab" value="${h}" ${(b.habilidades||[]).includes(h)?"checked":""}> ${h}</label>`).join("")}</div>${err("hab")}</fieldset>
-               <div class="campo"><label for="rMod">¿Cómo prefiere trabajar?</label><select id="rMod">${["Cualquiera","Presencial","Remoto"].map(m=>`<option>${m}</option>`).join("")}</select></div>`}
-      <div class="campo"><label for="rPass">Cree una contraseña</label><input id="rPass" type="password" autocomplete="new-password"><div class="ayuda">Mínimo 8 caracteres, con al menos un número.</div>${err("pass")}</div>
-      <div class="campo"><label class="check"><input type="checkbox" id="rPriv"> Leí el aviso de privacidad. Mis datos solo se usan para vincularme con ${emp?"personas trabajadoras":"empresas y personas verificadas"} y nunca se venden.</label>${err("priv")}</div>
+      <div class="campo"><label for="rMun">¿En qué municipio ${emp ? "está" : "vive"}?</label><select id="rMun">${MUNICIPIOS.map(m => `<option ${b.municipio === m ? "selected" : ""}>${m}</option>`).join("")}</select></div>
+      ${part ? "" : emp ? `<div class="campo"><label for="rGiro">¿A qué se dedica la empresa?</label><input id="rGiro" value="${esc(b.giro || "")}" placeholder="ejemplo: venta de ropa">${err("giro")}</div>`
+            : `<fieldset><legend>¿Qué sabe hacer? Marque una o varias.</legend>
+                <div class="opciones">${HABILIDADES.map(h => `<label><input type="checkbox" name="hab" value="${h}" ${(b.habilidades || []).includes(h) ? "checked" : ""}> ${h}</label>`).join("")}</div>${err("hab")}</fieldset>
+               <div class="campo"><label for="rMod">¿Dónde prefiere trabajar?</label><select id="rMod">${[["Cualquiera","En persona o desde casa"],["Presencial","En persona"],["Remoto","Desde casa"]].map(([v, t]) => `<option value="${v}">${t}</option>`).join("")}</select></div>`}
+      <div class="campo"><label for="rPass">Invente una contraseña</label><input id="rPass" type="password" autocomplete="new-password"><div class="ayuda">Debe tener al menos 8 letras o números, y por lo menos un número. Anótela en un lugar seguro.</div>${err("pass")}</div>
+      <div class="campo"><label class="check"><input type="checkbox" id="rPriv"> Acepto el aviso de privacidad: mis datos solo se usan para ${emp ? "encontrar a personas que trabajen conmigo" : "encontrarme trabajo"} y nunca se venden.</label>${err("priv")}</div>
       <div class="acciones"><button type="button" class="btn sec" id="atras">Regresar</button><button class="btn" style="flex:1">Crear mi cuenta</button></div>
     </form>`;
   }
   return `<div class="acceso">
     <section class="izq">
-      <div class="k">TRABAJO CON EXPERIENCIA</div>
       <h1>Tu experiencia sigue abriendo puertas.</h1>
-      <p>Encuentre trabajos temporales cerca de casa o desde casa, o contrate a personas mayores con experiencia para su empresa, su negocio o su casa, de forma simple y segura.</p>
-      <ul><li><i>✓</i>Perfiles verificados</li><li><i>✓</i>Empresas y personas verificadas, pago protegido</li><li><i>✓</i>Ayuda humana en cada paso</li></ul>
-      <div class="tel"><span class="ico" style="background:#a9dcc5;color:#0b3d31">☎</span><div><b>¿Prefiere ayuda por teléfono?</b><br>Llámenos gratis al 800 734 6785</div></div>
+      <p style="font-size:1.1rem">Trabajos cortos cerca de casa o desde casa para personas de 60 a 75 años. Y una forma segura de contratar a alguien con experiencia.</p>
+      <ul><li><i>${ic("check", 18)}</i>Todos se verifican con INE o RFC</li><li><i>${ic("check", 18)}</i>El pago se guarda hasta terminar el trabajo</li><li><i>${ic("check", 18)}</i>Ayuda por teléfono en cada paso</li></ul>
+      <div class="tel"><span class="ico" style="background:#a9dcc5;color:#0b3d31">${ic("telefono")}</span><div><b>¿Prefiere que le ayudemos por teléfono?</b><br>Llámenos gratis al 800 734 6785</div></div>
     </section>
     <section class="der">
-      <p style="font-weight:700;margin-top:0">Primero, cuéntenos quién es</p>
+      <p style="font-weight:700;margin-top:0;font-size:1.1rem">Primero, díganos qué quiere hacer:</p>
       <div class="roles">
-        <button class="rol" data-rol="trabajador" aria-pressed="${!emp}"><span class="ini">PE</span><span><b>Soy trabajador</b><br><small>Busco oportunidades</small></span></button>
-        <button class="rol" data-rol="empresa" aria-pressed="${emp}"><span class="ini">QC</span><span><b>Quiero contratar</b><br><small>Como persona o como empresa</small></span></button>
+        <button class="rol" data-rol="trabajador" aria-pressed="${!emp}"><span class="ini">${ic("buscar")}</span><span><b>Busco trabajo</b><br><small>Soy trabajador</small></span></button>
+        <button class="rol" data-rol="empresa" aria-pressed="${emp}"><span class="ini">${ic("grupo")}</span><span><b>Quiero contratar</b><br><small>Como persona o como empresa</small></span></button>
       </div>
-      <div class="tabs" role="tablist"><button role="tab" data-tab="entrar" aria-selected="${ui.pestaña==="entrar"}">Iniciar sesión</button><button role="tab" data-tab="crear" aria-selected="${ui.pestaña==="crear"}">Crear cuenta</button></div>
+      <div class="tabs" role="tablist"><button role="tab" data-tab="entrar" aria-selected="${ui.pestaña === "entrar"}">Ya tengo cuenta</button><button role="tab" data-tab="crear" aria-selected="${ui.pestaña === "crear"}">Soy nuevo</button></div>
       ${form}
-      <div class="aviso" style="margin-top:1.2rem"><span class="ico">✓</span><div><b>Puede avanzar con tranquilidad.</b> Nunca publicaremos nada sin su permiso.</div></div>
     </section></div>`;
 }
 
-/* ---------- Marco con navegación ---------- */
+/* ---------- Marco con los 5 botones del menú ---------- */
 function menu(u){
   const emp = u.rol === "empresa";
   const noLeidos = conversaciones(u).filter(c => c.nuevo).length;
+  const nuevas = emp ? solicitudesDe(u).filter(p => ["Enviada", "En revisión"].includes(p.estado)).length : 0;
   const items = emp
-    ? [["inicio","⌂","Inicio"],["publicar","＋","Publicar vacante"],["misvacantes","☰","Mis vacantes"],["postulados","☻","Personas postuladas"],["mensajes","✉","Mensajes",noLeidos],["perfil","◉",esPart(u)?"Mi perfil":"Perfil de la empresa"],["resenas","★","Calificaciones"]]
-    : [["inicio","⌂","Inicio"],["vacantes","⌕","Buscar trabajo"],["postulaciones","☰","Mis postulaciones"],["mensajes","✉","Mensajes",noLeidos],["perfil","◉","Mi perfil"],["resenas","★","Calificaciones"]];
+    ? [["inicio", "inicio", "Inicio", "Inicio"], ["publicar", "mas", "Publicar un trabajo", "Publicar"], ["misvacantes", "maletin", "Mis trabajos", "Trabajos"], ["postulados", "grupo", "Interesados", "Personas", nuevas], ["mensajes", "mensaje", "Mensajes", "Mensajes", noLeidos]]
+    : [["inicio", "inicio", "Inicio", "Inicio"], ["vacantes", "buscar", "Buscar trabajo", "Trabajos"], ["postulaciones", "lista", "Mis solicitudes", "Solicitudes"], ["mensajes", "mensaje", "Mensajes", "Mensajes", noLeidos], ["perfil", "persona", "Mi perfil", "Perfil"]];
   return `<nav class="lado" aria-label="Menú principal">
-    <div class="quien"><b>${esc(u.nombre)}</b><br><small>${emp?(esPart(u)?"Cuenta para contratar (particular)":"Cuenta de empresa"):"Cuenta de trabajador"} · ${esc(u.municipio)}</small></div>
-    ${items.map(([k,i,t,n]) => `<button data-ir="${k}" ${ui.vista===k?'aria-current="page"':""}><span aria-hidden="true">${i}</span>${t}${n?`<span class="badge">${n}</span>`:""}</button>`).join("")}
-    <button class="salir" data-salir style="margin-top:auto"><span aria-hidden="true">⎋</span>Cerrar sesión</button>
+    <div class="quien"><b>${esc(u.nombre)}</b><br><small>${emp ? (esPart(u) ? "Contrata como persona" : "Empresa") : "Trabajador"} · ${esc(u.municipio)}</small></div>
+    ${items.map(([k, i, t, c, n]) => `<button data-ir="${k}" ${ui.vista === k ? 'aria-current="page"' : ""} aria-label="${t}">${ic(i, 26)}<span class="lg">${t}</span><span class="sh">${c}</span>${n ? `<span class="badge" aria-label="${n} nuevos">${n}</span>` : ""}</button>`).join("")}
   </nav>`;
 }
 function marco(u){
@@ -407,205 +580,255 @@ function marco(u){
     ? {inicio:inicioEmp, publicar:publicar, misvacantes:misVacantes, postulados:postulados, mensajes:mensajes, perfil:perfilEmp, resenas:resenas}
     : {inicio:inicioTrab, vacantes:vacantes, postulaciones:misPostulaciones, mensajes:mensajes, perfil:perfilTrab, resenas:resenas};
   if(!vistas[ui.vista]) ui.vista = "inicio";
-  return `<div class="layout">${menu(u)}<main id="main" tabindex="-1">${vistas[ui.vista](u)}</main></div>
-  <footer class="demo-pie">Prototipo funcional de ReImpulso · los datos se guardan solo en este navegador ·
-  <button class="btn sec chico" data-salir>Cambiar de cuenta</button> <button class="btn sec chico" id="reiniciar">Restablecer datos de demostración</button></footer>`;
+  return `<div class="layout">${menu(u)}<main id="main" tabindex="-1">${vistas[ui.vista](u)}</main></div>`;
 }
 
-/* ---------- Tarjeta de vacante (trabajador) ---------- */
+/* ---------- Tarjeta de un trabajo ---------- */
 function tarjetaVac(v, u){
   const e = usuario(v.empresaId), c = compatibilidad(u, v);
-  const post = db.postulaciones.find(p => p.vacId === v.id && p.trabId === u.id);
+  const ya = db.postulaciones.find(p => p.vacId === v.id && p.trabId === u.id);
   return `<article class="tarjeta vac">
-    <div class="fila"><div><div class="emp">${esc(esPart(e)?e.nombre+" · particular":e.nombre)} ${sello(e)}</div>
-      <h3 style="margin-top:.3rem">${esc(v.titulo)}</h3></div>
-      <div class="compat">${c}%<small>compatible</small></div></div>
-    <p style="margin:.2rem 0">${esc(v.descripcion)}</p>
-    <div class="meta">${esc(v.municipio)} · ${esc(v.modalidad)} · Contrato por ${esc(v.plazo)} · ${esc(v.horario)}</div>
-    <div class="chips">${v.etiquetas.map(t=>`<span class="chip ${u.habilidades.includes(t)?"ok":""}">${esc(t)}</span>`).join("")}<span class="chip">Esfuerzo físico: ${esc(v.esfuerzo)}</span></div>
-    <div class="pie"><div><span class="pago">${dinero(v.pago)}</span> <small>por el periodo completo</small><br><small class="sub">Publicada ${hace(v.fecha)}</small></div>
-      <div class="acciones"><button class="btn sec" data-detalle="${v.id}">Ver detalles</button>
-      ${post ? `<button class="btn" disabled>Postulación enviada</button>` : `<button class="btn" data-postular="${v.id}">Postular rápido</button>`}</div></div>
+    <div class="quien-pub">${esc(e.nombre)}${esPart(e) ? " (persona)" : ""} ${sello(e)}</div>
+    <h3>${esc(v.titulo)}</h3>
+    ${queda(c)}
+    <ul class="datos">
+      <li><span>Dónde</span><b>${esc(MODALIDAD[v.modalidad])}${v.modalidad === "Remoto" ? "" : ", " + esc(v.municipio)}</b></li>
+      <li><span>Horario</span><b>${esc(v.horario)}</b></li>
+      <li><span>Cuánto dura</span><b>${esc(v.plazo)}</b></li>
+      <li><span>Esfuerzo físico</span><b>${esc(v.esfuerzo)}</b></li>
+    </ul>
+    <div class="pie"><div><span class="pago">${dinero(v.pago)}</span><br><span style="color:var(--gris);font-size:.92rem">por todo el trabajo · publicado ${hace(v.fecha)}</span></div>
+      <div class="acciones"><button class="btn sec" data-detalle="${v.id}">Ver más</button>
+      ${ya ? `<button class="btn" disabled>${ic("check")} Ya envió su solicitud</button>` : `<button class="btn" data-postular="${v.id}">Me interesa</button>`}</div></div>
   </article>`;
 }
 
 /* ---------- Trabajador ---------- */
 function inicioTrab(u){
   const activas = db.vacantes.filter(v => v.estado === "activa");
-  const recom = activas.map(v => [v, compatibilidad(u,v)]).sort((a,b)=>b[1]-a[1]);
-  const mias = db.postulaciones.filter(p => p.trabId === u.id && !["Terminada","No seleccionada"].includes(p.estado));
-  const {prom,n} = promedio(u.id);
-  const pendientes = Object.entries(u.verif).filter(([k,v]) => v !== "ok");
-  return `<h1>Hola, ${esc(u.nombre.split(" ")[0])}</h1><p class="sub">Estas son las oportunidades que encontramos para usted.</p>
-  ${verificado(u) && !pendientes.length ? `<div class="aviso"><span class="ico">✓</span><div><b>Su identidad está verificada.</b><br>Su perfil genera más confianza y lo ven empresas verificadas.</div></div>`
-    : `<div class="aviso ${verificado(u)?"info":"alerta"}"><span class="ico">!</span><div><b>Le falta verificar: ${pendientes.map(p=>({identidad:"identidad",telefono:"teléfono",antecedentes:"antecedentes",referencias:"referencias"})[p[0]]).join(", ")}.</b><br>${verificado(u)?"Completar estos puntos le da más confianza a las empresas.":"Sin verificar identidad y teléfono no se puede firmar un contrato."} <button class="btn chico" data-ir="perfil">Verificar ahora</button></div></div>`}
-  <div class="grid3">
-    <div class="dato"><span>Oportunidades para usted</span><b>${recom.filter(r=>r[1]>=50).length}</b><span>con 50 % o más de compatibilidad</span></div>
-    <div class="dato"><span>Postulaciones activas</span><b>${mias.length}</b><span>${mias.length?"en proceso":"todavía ninguna"}</span></div>
-    <div class="dato"><span>Calificación</span><b>${n?prom.toFixed(1).replace(".",","):"—"} <span style="color:var(--oro)">★</span></b><span>${n?`basada en ${n} experiencias`:"sin experiencias aún"}</span></div>
+  const recom = activas.map(v => [v, compatibilidad(u, v)]).sort((a, b) => b[1] - a[1]);
+  const mias = db.postulaciones.filter(p => p.trabId === u.id && !["Terminada", "No seleccionada"].includes(p.estado));
+  const noLeidos = conversaciones(u).filter(c => c.nuevo).length;
+  const porFirmar = mias.filter(p => p.estado === "Aceptada" && !p.contrato.firmaTrab).length;
+  const falta = ["identidad", "telefono"].filter(k => u.verif[k] !== "ok").map(k => k === "telefono" ? "su teléfono" : "su INE");
+  const partes = [];
+  const todas = db.postulaciones.filter(p => p.trabId === u.id).length;
+  partes.push(mias.length ? `Tiene <b>${mias.length} ${mias.length === 1 ? "solicitud" : "solicitudes"} en proceso</b>` : todas ? "No tiene solicitudes en proceso ahora" : "Todavía no ha enviado solicitudes");
+  if(noLeidos) partes.push(`<b>${noLeidos} ${noLeidos === 1 ? "mensaje nuevo" : "mensajes nuevos"}</b>`);
+  return `<h1>Hola, ${esc(pnombre(u))}</h1>${intro("¿Qué quiere hacer hoy? Toque uno de los botones.")}
+  ${falta.length ? `<div class="aviso alerta"><span class="ico">${ic("alerta")}</span><div><b>Le falta verificar ${falta.join(" y ")}.</b><br>Es necesario para poder firmar un contrato. Solo toma unos minutos.<br><button class="btn chico" data-ir="perfil">Verificar ahora</button></div></div>`
+    : `<div class="aviso"><span class="ico">${ic("escudo")}</span><div><b>Su cuenta está verificada.</b><br>Quienes contratan pueden confiar en usted.</div></div>`}
+  ${porFirmar ? `<div class="aviso oro"><span class="ico">${ic("firma")}</span><div><b>¡Lo aceptaron en un trabajo!</b><br>Tiene un contrato esperando su firma.<br><button class="btn chico" data-ir="postulaciones">Ir a firmar</button></div></div>` : ""}
+  <div class="grandes">
+    <button class="grande" data-ir="vacantes"><span class="gi">${ic("buscar")}</span><span><b>Buscar trabajo</b><br><span>${recom.filter(r => r[1] >= 50).length} trabajos le quedan bien</span></span></button>
+    <button class="grande" data-ir="postulaciones"><span class="gi">${ic("lista")}</span><span><b>Mis solicitudes</b><br><span>Vea en qué paso va cada una</span></span></button>
+    <button class="grande" data-ir="mensajes"><span class="gi">${ic("mensaje")}</span><span><b>Mensajes</b><br><span>${noLeidos ? noLeidos + " sin leer" : "Platique con quien contrata"}</span></span></button>
   </div>
-  <div class="fila" style="display:flex;justify-content:space-between;align-items:end"><div><h2>Recomendadas para usted</h2><p class="sub">Según su experiencia, ubicación y horario.</p></div><button class="btn sec chico" data-ir="vacantes">Ver todas</button></div>
-  ${recom.slice(0,2).map(r => tarjetaVac(r[0],u)).join("")}`;
+  <p class="resumen">${partes.join(" y ")}.</p>
+  <h2>Trabajos que le recomendamos</h2>${intro("Los elegimos por lo que sabe hacer, dónde vive y su horario.")}
+  ${recom.slice(0, 2).map(r => tarjetaVac(r[0], u)).join("")}
+  <button class="btn sec ancho" data-ir="vacantes">Ver todos los trabajos ${ic("flecha")}</button>`;
 }
 function vacantes(u){
   const f = ui.filtros;
-  let lista = db.vacantes.filter(v => v.estado === "activa").map(v => [v, compatibilidad(u,v)]);
+  let lista = db.vacantes.filter(v => v.estado === "activa").map(v => [v, compatibilidad(u, v)]);
   const q = f.q.trim().toLowerCase();
-  if(q) lista = lista.filter(([v]) => (v.titulo+" "+v.descripcion+" "+v.etiquetas.join(" ")+" "+usuario(v.empresaId).nombre).toLowerCase().includes(q));
-  if(f.mun !== "Todas") lista = lista.filter(([v]) => v.municipio === f.mun || (f.mun==="Desde casa" && v.modalidad==="Remoto"));
+  if(q) lista = lista.filter(([v]) => (v.titulo + " " + v.descripcion + " " + v.etiquetas.join(" ") + " " + usuario(v.empresaId).nombre).toLowerCase().includes(q));
+  if(f.cerca === "cerca") lista = lista.filter(([v]) => v.modalidad !== "Remoto" && (v.municipio === u.municipio || (CONURBADA.includes(u.municipio) && CONURBADA.includes(v.municipio))));
+  if(f.cerca === "casa") lista = lista.filter(([v]) => v.modalidad === "Remoto");
+  if(f.mun !== "Todas") lista = lista.filter(([v]) => v.municipio === f.mun);
   if(f.plazo !== "Cualquiera") lista = lista.filter(([v]) => v.plazo === f.plazo);
-  if(f.mod !== "Cualquiera") lista = lista.filter(([v]) => v.modalidad === f.mod);
-  lista.sort((a,b)=>b[1]-a[1]);
-  return `<h1>Encuentre una oportunidad</h1><p class="sub">Trabajos temporales de empresas y personas verificadas, ordenados por compatibilidad.</p>
-  <div class="tarjeta filtros">
-    <div><label for="fQ">Buscar</label><input id="fQ" value="${esc(f.q)}" placeholder="Trabajo, quién contrata o habilidad"></div>
-    <div><label for="fMun">Ubicación</label><select id="fMun">${["Todas",...MUNICIPIOS].map(m=>`<option ${f.mun===m?"selected":""}>${m}</option>`).join("")}</select></div>
-    <div><label for="fMod">Modalidad</label><select id="fMod">${["Cualquiera","Presencial","Remoto"].map(m=>`<option ${f.mod===m?"selected":""}>${m}</option>`).join("")}</select></div>
-    <div><label for="fPlazo">Plazo</label><select id="fPlazo">${["Cualquiera","Unas horas","1 día","1 semana","1 mes","3 meses"].map(m=>`<option ${f.plazo===m?"selected":""}>${m}</option>`).join("")}</select></div>
+  lista.sort((a, b) => b[1] - a[1]);
+  const masAbierto = f.mun !== "Todas" || f.plazo !== "Cualquiera";
+  return `<h1>Trabajos</h1>${intro("Trabajos cortos de empresas y personas verificadas. Primero aparecen los que mejor le quedan.")}
+  ${guia("¿Cómo me postulo a un trabajo?", ["Lea el trabajo. Si quiere saber más, toque <b>«Ver más»</b>; ahí también puede escucharlo en voz alta.", "Si le interesa, toque <b>«Me interesa»</b> y confirme.", "Revise en <b>«Mis solicitudes»</b> en qué paso va. Le avisaremos cuando le respondan."])}
+  <div class="tarjeta">
+    <label for="fQ">Buscar por palabra</label><input id="fQ" value="${esc(f.q)}" placeholder="ejemplo: costura, clases, recepción">
+    <div class="rapidos" role="group" aria-label="Mostrar">
+      ${[["todos", "Todos"], ["cerca", "Cerca de mí"], ["casa", "Desde casa"]].map(([k, t]) => `<button data-cerca="${k}" aria-pressed="${f.cerca === k}">${t}</button>`).join("")}
+    </div>
+    <details class="mas" ${masAbierto ? "open" : ""}><summary>Más opciones para filtrar</summary>
+      <div class="filtros">
+        <div><label for="fMun">Municipio</label><select id="fMun">${["Todas", ...MUNICIPIOS].map(m => `<option value="${m}" ${f.mun === m ? "selected" : ""}>${m === "Todas" ? "Todos" : m}</option>`).join("")}</select></div>
+        <div><label for="fPlazo">Cuánto dura</label><select id="fPlazo">${["Cualquiera", "Unas horas", "1 día", "1 semana", "1 mes", "3 meses"].map(m => `<option ${f.plazo === m ? "selected" : ""}>${m}</option>`).join("")}</select></div>
+      </div>
+    </details>
   </div>
-  <p><b>${lista.length} ${lista.length===1?"oportunidad disponible":"oportunidades disponibles"}</b></p>
-  ${lista.length ? lista.map(([v]) => tarjetaVac(v,u)).join("") : `<div class="tarjeta">No encontramos vacantes con esos filtros. <button class="btn sec chico" id="limpiar">Quitar filtros</button></div>`}`;
+  <p style="font-size:1.1rem"><b>${lista.length} ${lista.length === 1 ? "trabajo encontrado" : "trabajos encontrados"}</b></p>
+  ${lista.length ? lista.map(([v]) => tarjetaVac(v, u)).join("") : `<div class="tarjeta"><p>No encontramos trabajos con esa búsqueda.</p><button class="btn sec" id="limpiar">Ver todos los trabajos</button></div>`}`;
 }
-function lineaTiempo(p){
-  if(p.estado === "No seleccionada") return `<span class="chip no">No seleccionada esta vez</span>`;
+function siguienteTexto(p, emp){
+  const c = p.contrato || {};
+  if(emp) return ({
+    "Enviada":"Revise el perfil. Si le convence, toque «Aceptar a esta persona».",
+    "En revisión":"Revise el perfil. Si le convence, toque «Aceptar a esta persona».",
+    "Aceptada": c.firmaEmp ? "Usted ya firmó. Falta que la persona firme el contrato." : "Lea el contrato y fírmelo.",
+    "Contrato firmado":"Deposite el pago para que la persona pueda empezar. Lo guardamos hasta que el trabajo se termine.",
+    "En curso":"Cuando el trabajo esté hecho, toque «El trabajo ya se terminó» para entregar el pago.",
+    "Terminada": p.calEmp ? "Trabajo terminado. Gracias por usar ReImpulso." : "Trabajo terminado. Califique a la persona.",
+    "No seleccionada":"Le avisamos amablemente que eligió a otra persona."})[p.estado];
+  return ({
+    "Enviada":"Espere la respuesta. Le avisaremos aquí y en Mensajes.",
+    "En revisión":"Están revisando su perfil. Si le piden algo, lo verá en Mensajes.",
+    "Aceptada": c.firmaTrab ? "Usted ya firmó. Falta que firme quien le contrata." : "Lea el contrato y fírmelo con el botón verde.",
+    "Contrato firmado":"Quien le contrata debe depositar el pago. Cuando lo haga, puede empezar a trabajar.",
+    "En curso":"El pago ya está guardado. Haga el trabajo como se acordó; al terminar recibirá su dinero.",
+    "Terminada": p.calTrab ? "¡Listo! Ya recibió su pago. Gracias por calificar." : "¡Listo! Ya recibió su pago. Califique cómo le fue.",
+    "No seleccionada":"Esta vez eligieron a otra persona. No se desanime: hay más trabajos esperándole."})[p.estado];
+}
+function progreso(p, emp){
+  if(p.estado === "No seleccionada") return `<p><span class="chip no">${emp ? "No seleccionada" : "Eligieron a otra persona"}</span></p>`;
   const i = ESTADOS.indexOf(p.estado);
-  return `<ol class="linea-tiempo">${ESTADOS.map((s,k)=>`<li class="${k<=i?"hecho":""}">${k<=i?"✓ ":""}${s}</li>`).join("")}</ol>`;
+  return `<div class="progreso"><div class="t">Paso ${i + 1} de ${ESTADOS.length}: ${(emp ? NOMBRE_C : NOMBRE_T)[p.estado]}</div>
+    <div class="barra" role="progressbar" aria-valuemin="1" aria-valuemax="${ESTADOS.length}" aria-valuenow="${i + 1}"><i style="width:${(i + 1) / ESTADOS.length * 100}%"></i></div></div>`;
 }
+function bloqueSigue(p, emp){ return `<div class="sigue">${ic("flecha")}<div><b>¿Qué sigue?</b>${esc(siguienteTexto(p, emp))}</div></div>`; }
 function accionesContrato(p, u){
   const emp = u.rol === "empresa", c = p.contrato;
   if(!c) return "";
-  let h = `<button class="btn sec chico" data-contrato="${p.id}">Ver contrato digital</button>`;
-  if(p.estado === "Aceptada" && ((emp && !c.firmaEmp) || (!emp && !c.firmaTrab))) h += `<button class="btn chico" data-firmar="${p.id}">Firmar contrato</button>`;
-  if(emp && p.estado === "Contrato firmado") h += `<button class="btn chico" data-depositar="${p.id}">Depositar pago protegido</button>`;
-  if(emp && p.estado === "En curso") h += `<button class="btn chico" data-terminar="${p.id}">Confirmar servicio terminado</button>`;
-  if(p.estado === "Terminada" && ((emp && !p.calEmp) || (!emp && !p.calTrab))) h += `<button class="btn chico" data-calificar="${p.id}">Calificar experiencia</button>`;
+  let h = "";
+  if(p.estado === "Aceptada" && ((emp && !c.firmaEmp) || (!emp && !c.firmaTrab))) h += `<button class="btn" data-firmar="${p.id}">${ic("firma")} Leer y firmar el contrato</button>`;
+  else h += `<button class="btn sec" data-contrato="${p.id}">Ver el contrato</button>`;
+  if(emp && p.estado === "Contrato firmado") h += `<button class="btn" data-depositar="${p.id}">${ic("dinero")} Depositar el pago</button>`;
+  if(emp && p.estado === "En curso") h += `<button class="btn" data-terminar="${p.id}">${ic("check")} El trabajo ya se terminó</button>`;
+  if(p.estado === "Terminada" && ((emp && !p.calEmp) || (!emp && !p.calTrab))) h += `<button class="btn" data-calificar="${p.id}">${ic("estrella")} Calificar</button>`;
   return h;
 }
 function misPostulaciones(u){
-  const mias = db.postulaciones.filter(p => p.trabId === u.id).sort((a,b)=>b.fecha-a.fecha);
-  return `<h1>Mis postulaciones</h1><p class="sub">Aquí ve en qué paso va cada proceso.</p>
+  const mias = db.postulaciones.filter(p => p.trabId === u.id).sort((a, b) => b.fecha - a.fecha);
+  return `<h1>Mis solicitudes</h1>${intro("Aquí ve en qué paso va cada trabajo que pidió y qué tiene que hacer después.")}
+  ${guia("¿Cuáles son los pasos?", ["Usted envía su solicitud.", "Quien contrata la revisa.", "Si le aceptan, los dos firman un contrato.", "Quien contrata deposita el pago y nosotros lo guardamos.", "Usted hace el trabajo.", "Al terminar, recibe su pago y se califican."])}
   ${mias.length ? mias.map(p => { const v = vacante(p.vacId), e = usuario(v.empresaId); return `<article class="tarjeta">
-    <div class="emp" style="font-size:.8rem;font-weight:800;color:var(--verde);text-transform:uppercase">${esc(e.nombre)}${esPart(e)?" · particular":""}</div>
-    <h3>${esc(v.titulo)}</h3><div class="meta">Enviada ${hace(p.fecha)} · ${dinero(v.pago)}</div>
-    ${lineaTiempo(p)}
-    ${p.estado==="En curso"?`<div class="aviso info"><span class="ico">$</span><div><b>Su pago ya está protegido.</b> ${esc(e.nombre)} depositó ${dinero(v.pago)} y se le entrega al terminar el servicio.</div></div>`:""}
-    ${p.estado==="Terminada"?`<div class="aviso"><span class="ico">✓</span><div><b>Pago liberado:</b> ${dinero(v.pago)} enviados a su cuenta.</div></div>`:""}
-    <div class="acciones"><button class="btn sec chico" data-chat="${p.id}">Enviar mensaje</button>${accionesContrato(p,u)}</div></article>`; }).join("")
-  : `<div class="tarjeta">Todavía no se ha postulado. <button class="btn chico" data-ir="vacantes">Buscar trabajo</button></div>`}`;
+    <div class="quien-pub" style="font-weight:700;color:var(--verde)">${esc(e.nombre)}${esPart(e) ? " (persona)" : ""}</div>
+    <h3 style="font-size:1.25rem;margin:.3rem 0">${esc(v.titulo)}</h3>
+    <p style="color:var(--gris);margin:0">Pago: <b style="color:var(--tinta)">${dinero(v.pago)}</b> · enviada ${hace(p.fecha)}</p>
+    ${progreso(p, false)}
+    ${p.estado === "En curso" ? `<div class="aviso info"><span class="ico">${ic("escudo")}</span><div><b>Su pago ya está guardado.</b><br>${esc(e.nombre)} depositó ${dinero(v.pago)}. Se lo entregamos al terminar.</div></div>` : ""}
+    ${bloqueSigue(p, false)}
+    <div class="acciones">${accionesContrato(p, u)}<button class="btn sec" data-chat="${p.id}">${ic("mensaje")} Escribir mensaje</button></div></article>`; }).join("")
+  : `<div class="tarjeta"><p>Todavía no ha pedido ningún trabajo.</p><button class="btn" data-ir="vacantes">Buscar trabajo</button></div>`}`;
 }
 function perfilTrab(u){
-  const {prom,n} = promedio(u.id);
-  const nom = {identidad:"Identidad (INE)",telefono:"Teléfono",antecedentes:"Antecedentes",referencias:"Referencias"};
-  return `<h1>Mi perfil</h1>
-  <div class="tarjeta"><h2>Validación del perfil</h2><p class="sub">Entre más puntos verificados, más confianza tienen quienes contratan.</p>
-    <table><tbody>${Object.keys(nom).map(k=>`<tr><td><b>${nom[k]}</b></td><td>${chipVerif(u.verif[k])}</td><td style="text-align:right">${u.verif[k]==="ok"?"":`<button class="btn chico" data-verif="${k}">${k==="telefono"?"Enviar código":k==="identidad"?"Subir INE":"Iniciar"}</button>`}</td></tr>`).join("")}</tbody></table></div>
-  <form class="tarjeta" id="fPerfil" novalidate><h2>Datos principales</h2>
+  const {prom, n} = promedio(u.id);
+  const nom = {identidad:["Su INE", "Una foto de su credencial para votar"], telefono:["Su teléfono", "Le mandamos un código por mensaje"], antecedentes:["Antecedentes", "Revisamos que no tenga problemas legales"], referencias:["Referencias", "Hablamos con personas que le conocen"]};
+  const hechos = Object.values(u.verif).filter(x => x === "ok").length;
+  return `<h1>Mi perfil</h1>${intro("Sus datos y su verificación. Entre más completo, más confianza le tienen.")}
+  <div class="tarjeta"><h2>Verificación</h2><p>Lleva <b>${hechos} de 4</b>. Los dos primeros son necesarios para firmar contratos.</p>
+    <table><tbody>${Object.keys(nom).map(k => `<tr><td><b>${nom[k][0]}</b><br><span style="color:var(--gris);font-size:.92rem">${nom[k][1]}</span></td><td>${chipVerif(u.verif[k])}</td><td style="text-align:right">${u.verif[k] === "ok" || u.verif[k] === "revision" ? "" : `<button class="btn chico" data-verif="${k}">${k === "telefono" ? "Verificar" : k === "identidad" ? "Subir foto" : "Empezar"}</button>`}</td></tr>`).join("")}</tbody></table></div>
+  <div class="tarjeta" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap"><div><b>Mis calificaciones</b><br>${n ? `${estrellas(Math.round(prom))} ${prom.toFixed(1)} de 5 (${n} opiniones)` : "Todavía no tiene calificaciones."}</div><button class="btn sec" data-ir="resenas">Ver opiniones</button></div>
+  <form class="tarjeta" id="fPerfil" novalidate><h2>Mis datos</h2>
     <div class="campo"><label for="pNombre">Nombre</label><input id="pNombre" value="${esc(u.nombre)}"></div>
-    <div class="campo"><label for="pTel">Teléfono</label><input id="pTel" value="${esc(u.tel)}"></div>
-    <div class="campo"><label for="pMun">Municipio</label><select id="pMun">${MUNICIPIOS.map(m=>`<option ${u.municipio===m?"selected":""}>${m}</option>`).join("")}</select></div>
-    <div class="campo"><label for="pDisp">Disponibilidad</label><select id="pDisp">${["Mañanas","Tardes","Cualquier horario"].map(m=>`<option ${u.disponibilidad===m?"selected":""}>${m}</option>`).join("")}</select></div>
-    <div class="campo"><label for="pMod">Modalidad preferida</label><select id="pMod">${["Cualquiera","Presencial","Remoto"].map(m=>`<option ${u.modalidad===m?"selected":""}>${m}</option>`).join("")}</select></div>
-    <fieldset class="campo" style="border:0;padding:0"><legend style="font-weight:700">Experiencia y habilidades</legend><div class="chips">${HABILIDADES.map(h=>`<label class="check chip" style="padding:.35rem .6rem"><input type="checkbox" name="hab" value="${h}" ${u.habilidades.includes(h)?"checked":""}> ${h}</label>`).join("")}</div></fieldset>
-    <div class="campo"><label for="pBio">Cuéntele a quienes contratan sobre usted</label><textarea id="pBio">${esc(u.bio||"")}</textarea></div>
-    <button class="btn">Guardar cambios</button>
-  </form>
-  <div class="tarjeta"><b>Calificación:</b> ${n?prom.toFixed(1):"—"} ★ (${n} reseñas)</div>`;
+    <div class="campo"><label for="pTel">Celular</label><input id="pTel" value="${esc(u.tel)}"></div>
+    <div class="campo"><label for="pMun">Municipio</label><select id="pMun">${MUNICIPIOS.map(m => `<option ${u.municipio === m ? "selected" : ""}>${m}</option>`).join("")}</select></div>
+    <div class="campo"><label for="pDisp">¿Cuándo puede trabajar?</label><select id="pDisp">${["Mañanas", "Tardes", "Cualquier horario"].map(m => `<option ${u.disponibilidad === m ? "selected" : ""}>${m}</option>`).join("")}</select></div>
+    <div class="campo"><label for="pMod">¿Dónde prefiere trabajar?</label><select id="pMod">${[["Cualquiera", "En persona o desde casa"], ["Presencial", "En persona"], ["Remoto", "Desde casa"]].map(([v, t]) => `<option value="${v}" ${u.modalidad === v ? "selected" : ""}>${t}</option>`).join("")}</select></div>
+    <fieldset><legend>¿Qué sabe hacer?</legend><div class="opciones">${HABILIDADES.map(h => `<label><input type="checkbox" name="hab" value="${h}" ${u.habilidades.includes(h) ? "checked" : ""}> ${h}</label>`).join("")}</div></fieldset>
+    <div class="campo"><label for="pBio">Cuente un poco de su experiencia</label><textarea id="pBio">${esc(u.bio || "")}</textarea><div class="ayuda">Por ejemplo: en qué trabajó y cuántos años.</div></div>
+    <button class="btn ancho">Guardar mis datos</button>
+  </form>`;
 }
 
-/* ---------- Empresa ---------- */
+/* ---------- Quien contrata ---------- */
+function solicitudesDe(u){
+  const ids = db.vacantes.filter(v => v.empresaId === u.id).map(v => v.id);
+  return db.postulaciones.filter(p => ids.includes(p.vacId));
+}
 function inicioEmp(u){
   const mias = db.vacantes.filter(v => v.empresaId === u.id);
-  const ids = mias.map(v=>v.id);
-  const posts = db.postulaciones.filter(p => ids.includes(p.vacId));
-  const {prom,n} = promedio(u.id);
-  const nuevas = posts.filter(p => ["Enviada","En revisión"].includes(p.estado));
+  const posts = solicitudesDe(u);
+  const nuevas = posts.filter(p => ["Enviada", "En revisión"].includes(p.estado));
+  const pend = posts.filter(p => (p.estado === "Aceptada" && !p.contrato.firmaEmp) || p.estado === "Contrato firmado" || p.estado === "En curso");
   const avisoV = esPart(u)
-    ? (verificado(u) ? `<div class="aviso"><span class="ico">✓</span><div><b>Su identidad está verificada.</b><br>Su sello de persona verificada aparece en sus vacantes. Como particular no paga cuota mensual: solo 10 % por cada trabajo terminado.</div></div>`
-       : `<div class="aviso alerta"><span class="ico">!</span><div><b>Verifique su INE y su teléfono.</b><br>Puede publicar vacantes, pero para aceptar a alguien y firmar el contrato necesita estar verificado. <button class="btn chico" data-ir="perfil">Verificar ahora</button></div></div>`)
-    : `<div class="aviso"><span class="ico">✓</span><div><b>Empresa validada correctamente.</b><br>RFC ${esc(u.rfc)} verificado. Su sello aparece en todas sus vacantes.</div></div>`;
-  return `<h1>Hola, ${esPart(u) ? esc(u.nombre.split(" ")[0]) : "equipo " + esc(u.nombre.split(" ").slice(0,2).join(" "))}</h1><p class="sub">${esPart(u)?"Publique lo que necesita y encuentre a una persona con experiencia.":"Administre sus vacantes y encuentre personas con experiencia."}</p>
+    ? (verificado(u) ? `<div class="aviso"><span class="ico">${ic("escudo")}</span><div><b>Su identidad está verificada.</b><br>Como persona no paga cuota mensual: solo 10 % de cada trabajo terminado.</div></div>`
+       : `<div class="aviso alerta"><span class="ico">${ic("alerta")}</span><div><b>Verifique su INE y su teléfono.</b><br>Puede publicar trabajos, pero para aceptar a alguien necesita estar verificado.<br><button class="btn chico" data-ir="perfil">Verificar ahora</button></div></div>`)
+    : `<div class="aviso"><span class="ico">${ic("escudo")}</span><div><b>Empresa verificada.</b><br>Su RFC ${esc(u.rfc)} está validado. Su sello aparece en todos sus trabajos.</div></div>`;
+  return `<h1>Hola, ${esPart(u) ? esc(pnombre(u)) : esc(u.nombre.split(" ").slice(0, 2).join(" "))}</h1>${intro("¿Qué quiere hacer hoy? Toque uno de los botones.")}
   ${avisoV}
-  <div class="grid3">
-    <div class="dato"><span>Vacantes activas</span><b>${mias.filter(v=>v.estado==="activa").length}</b><span>de ${mias.length} publicadas</span></div>
-    <div class="dato"><span>Personas por revisar</span><b>${nuevas.length}</b><span>postulaciones nuevas</span></div>
-    <div class="dato"><span>Calificación</span><b>${n?prom.toFixed(1).replace(".",","):"—"} <span style="color:var(--oro)">★</span></b><span>${n} experiencias</span></div>
+  ${pend.length ? `<div class="aviso oro"><span class="ico">${ic("flecha")}</span><div><b>Tiene ${pend.length} ${pend.length === 1 ? "contratación" : "contrataciones"} esperando que usted haga algo.</b><br><button class="btn chico" data-ir="postulados">Ver qué falta</button></div></div>` : ""}
+  <div class="grandes">
+    <button class="grande" data-ir="publicar"><span class="gi">${ic("mas")}</span><span><b>Publicar un trabajo</b><br><span>Diga qué necesita</span></span></button>
+    <button class="grande" data-ir="postulados"><span class="gi">${ic("grupo")}</span><span><b>Interesados</b><br><span>${nuevas.length ? nuevas.length + (nuevas.length === 1 ? " persona nueva" : " personas nuevas") : "Nadie nuevo por ahora"}</span></span></button>
+    <button class="grande" data-ir="misvacantes"><span class="gi">${ic("maletin")}</span><span><b>Mis trabajos</b><br><span>${mias.filter(v => v.estado === "activa").length} publicados</span></span></button>
   </div>
-  <div class="acciones" style="margin-bottom:1rem"><button class="btn" data-ir="publicar">＋ Publicar vacante</button><button class="btn sec" data-ir="postulados">Revisar postulaciones</button></div>
-  <h2>Postulaciones recientes</h2>
-  ${nuevas.length ? nuevas.map(p => filaPostulado(p)).join("") : `<div class="tarjeta">No tiene postulaciones nuevas por ahora.</div>`}`;
+  <h2>Personas interesadas</h2>
+  ${nuevas.length ? nuevas.map(p => filaPostulado(p)).join("") : `<div class="tarjeta">No hay personas nuevas por ahora.</div>`}`;
 }
 function publicar(u){
-  const b = ui.borrador, e = ui.errores, err = k => e[k] ? `<div class="error">${esc(e[k])}</div>` : "";
-  return `<h1>Publicar vacante temporal</h1><p class="sub">Describa la necesidad con palabras sencillas. La plataforma avisará a las personas compatibles.</p>
+  const b = ui.borrador, e = ui.errores, err = k => e[k] ? `<div class="error">${ic("alerta", 20)}<span>${esc(e[k])}</span></div>` : "";
+  return `<h1>Publicar un trabajo</h1>${intro("Llene los cuatro pasos con palabras sencillas. Al terminar, avisamos a las personas que mejor encajan.")}
   <form class="tarjeta" id="fVac" novalidate>
-    <div class="campo"><label for="vTit">Título de la vacante</label><input id="vTit" value="${esc(b.titulo||"")}" placeholder="${esPart(u)?"Ejemplo: Clases de regularización para mi hijo":"Ejemplo: Apoyo en recepción por fin de semana"}">${err("titulo")}</div>
-    <div class="campo"><label for="vDesc">¿Qué actividades hará la persona?</label><textarea id="vDesc">${esc(b.descripcion||"")}</textarea>${err("descripcion")}</div>
-    <div class="filtros" style="grid-template-columns:1fr 1fr 1fr">
-      <div class="campo"><label for="vMun">Municipio</label><select id="vMun">${MUNICIPIOS.map(m=>`<option ${(b.municipio||u.municipio)===m?"selected":""}>${m}</option>`).join("")}</select></div>
-      <div class="campo"><label for="vMod">Modalidad</label><select id="vMod">${["Presencial","Remoto"].map(m=>`<option ${b.modalidad===m?"selected":""}>${m}</option>`).join("")}</select></div>
-      <div class="campo"><label for="vPlazo">Plazo del contrato</label><select id="vPlazo">${["Unas horas","1 día","1 semana","1 mes","3 meses"].map(m=>`<option ${(b.plazo||"1 semana")===m?"selected":""}>${m}</option>`).join("")}</select></div>
+    <p class="seccion"><i>1</i>¿Qué necesita?</p>
+    <div class="campo"><label for="vTit">Nombre del trabajo</label><input id="vTit" value="${esc(b.titulo || "")}" placeholder="${esPart(u) ? "ejemplo: Clases de regularización para mi hijo" : "ejemplo: Apoyo en recepción el fin de semana"}">${err("titulo")}</div>
+    <div class="campo"><label for="vDesc">¿Qué tiene que hacer la persona?</label><textarea id="vDesc" placeholder="Explíquelo como se lo diría en persona.">${esc(b.descripcion || "")}</textarea>${err("descripcion")}</div>
+    <p class="seccion"><i>2</i>¿Dónde y cuándo?</p>
+    <div class="filtros">
+      <div class="campo"><label for="vMod">¿Dónde se trabaja?</label><select id="vMod">${[["Presencial", "En persona"], ["Remoto", "Desde casa"]].map(([v, t]) => `<option value="${v}" ${b.modalidad === v ? "selected" : ""}>${t}</option>`).join("")}</select></div>
+      <div class="campo"><label for="vMun">Municipio</label><select id="vMun">${MUNICIPIOS.map(m => `<option ${(b.municipio || u.municipio) === m ? "selected" : ""}>${m}</option>`).join("")}</select></div>
+      <div class="campo"><label for="vPlazo">¿Cuánto dura?</label><select id="vPlazo">${["Unas horas", "1 día", "1 semana", "1 mes", "3 meses"].map(m => `<option ${(b.plazo || "1 semana") === m ? "selected" : ""}>${m}</option>`).join("")}</select></div>
     </div>
-    <div class="filtros" style="grid-template-columns:1fr 1fr 1fr">
-      <div class="campo"><label for="vHor">Horario</label><input id="vHor" value="${esc(b.horario||"")}" placeholder="9:00 a 13:00">${err("horario")}</div>
-      <div class="campo"><label for="vPago">Pago total por el trabajo (MXN)</label><input id="vPago" inputmode="numeric" value="${esc(b.pago||"")}">${err("pago")}</div>
-      <div class="campo"><label for="vEsf">Esfuerzo físico</label><select id="vEsf"><option>Bajo</option><option>Moderado</option></select></div>
-    </div>
-    <fieldset class="campo" style="border:0;padding:0"><legend style="font-weight:700">Habilidades que busca</legend><div class="chips">${HABILIDADES.map(h=>`<label class="check chip" style="padding:.35rem .6rem"><input type="checkbox" name="hab" value="${h}" ${(b.etiquetas||[]).includes(h)?"checked":""}> ${h}</label>`).join("")}</div>${err("etiquetas")}</fieldset>
-    <div class="aviso info"><span class="ico">i</span><div>El pago debe ser al menos proporcional al salario mínimo vigente ($315.04 por jornada de 8 horas). ReImpulso cobra 10 % sobre el pago al terminar el trabajo, a empresas y a particulares. ${esPart(u)?"Como particular no paga cuota mensual.":"Las empresas pagan además $790 + IVA al mes."}</div></div>
-    <button class="btn">Publicar y avisar a candidatos</button>
+    <div class="campo"><label for="vHor">Días y horario</label><input id="vHor" value="${esc(b.horario || "")}" placeholder="ejemplo: lunes a viernes de 9:00 a 13:00">${err("horario")}</div>
+    <div class="campo"><label for="vEsf">¿Requiere esfuerzo físico?</label><select id="vEsf"><option value="Bajo">Poco esfuerzo</option><option value="Moderado">Un poco más de esfuerzo</option></select></div>
+    <p class="seccion"><i>3</i>¿Cuánto va a pagar?</p>
+    <div class="campo"><label for="vPago">Pago por todo el trabajo, en pesos</label><input id="vPago" inputmode="numeric" value="${esc(b.pago || "")}" placeholder="ejemplo: 1500">${err("pago")}</div>
+    <div class="aviso info"><span class="ico">${ic("info")}</span><div>El pago debe ser justo: por lo menos lo que daría el salario mínimo ($315.04 por 8 horas). ReImpulso cobra 10 % del pago cuando el trabajo se termina. ${esPart(u) ? "Como persona no paga cuota mensual." : "Las empresas pagan además $790 + IVA al mes."}</div></div>
+    <p class="seccion"><i>4</i>¿Qué debe saber hacer la persona?</p>
+    <fieldset><legend>Marque una o varias</legend><div class="opciones">${HABILIDADES.map(h => `<label><input type="checkbox" name="hab" value="${h}" ${(b.etiquetas || []).includes(h) ? "checked" : ""}> ${h}</label>`).join("")}</div>${err("etiquetas")}</fieldset>
+    <button class="btn ancho">Publicar el trabajo</button>
   </form>`;
 }
 function misVacantes(u){
-  const mias = db.vacantes.filter(v => v.empresaId === u.id).sort((a,b)=>b.fecha-a.fecha);
-  return `<h1>Mis vacantes</h1><p class="sub">Pause o cierre una vacante cuando ya no la necesite.</p>
-  ${mias.map(v => { const n = db.postulaciones.filter(p=>p.vacId===v.id).length; return `<article class="tarjeta">
-    <div class="fila" style="display:flex;justify-content:space-between;gap:1rem"><h3>${esc(v.titulo)}</h3>${v.estado==="activa"?'<span class="chip ok">Activa</span>':v.estado==="pausada"?'<span class="chip pend">Pausada</span>':'<span class="chip no">Cerrada</span>'}</div>
-    <div class="meta">${esc(v.municipio)} · ${esc(v.modalidad)} · ${esc(v.plazo)} · ${dinero(v.pago)} · publicada ${hace(v.fecha)}</div>
-    <div class="acciones"><button class="btn sec chico" data-ir="postulados">${n} ${n===1?"persona postulada":"personas postuladas"}</button>
-    ${v.estado==="activa"?`<button class="btn sec chico" data-estadovac="${v.id}|pausada">Pausar</button>`:v.estado==="pausada"?`<button class="btn sec chico" data-estadovac="${v.id}|activa">Reactivar</button>`:""}
-    ${v.estado!=="cerrada"?`<button class="btn peligro chico" data-estadovac="${v.id}|cerrada">Cerrar</button>`:""}</div></article>`; }).join("") || `<div class="tarjeta">Aún no publica vacantes.</div>`}`;
+  const mias = db.vacantes.filter(v => v.empresaId === u.id).sort((a, b) => b.fecha - a.fecha);
+  return `<h1>Mis trabajos publicados</h1>${intro("Puede pausar un trabajo para que ya no aparezca, o cerrarlo cuando ya no lo necesite.")}
+  ${mias.map(v => { const n = db.postulaciones.filter(p => p.vacId === v.id).length; return `<article class="tarjeta">
+    <p style="margin:0 0 .3rem">${v.estado === "activa" ? '<span class="chip ok">Publicado</span>' : v.estado === "pausada" ? '<span class="chip pend">En pausa</span>' : '<span class="chip no">Cerrado</span>'}</p>
+    <h3 style="font-size:1.25rem">${esc(v.titulo)}</h3>
+    <ul class="datos"><li><span>Dónde</span><b>${esc(MODALIDAD[v.modalidad])}, ${esc(v.municipio)}</b></li><li><span>Cuánto dura</span><b>${esc(v.plazo)}</b></li><li><span>Pago</span><b>${dinero(v.pago)}</b></li><li><span>Publicado</span><b>${hace(v.fecha)}</b></li></ul>
+    <div class="acciones"><button class="btn sec" data-ir="postulados">${ic("grupo")} ${n} ${n === 1 ? "persona interesada" : "personas interesadas"}</button>
+    ${v.estado === "activa" ? `<button class="btn sec" data-estadovac="${v.id}|pausada">Pausar</button>` : v.estado === "pausada" ? `<button class="btn sec" data-estadovac="${v.id}|activa">Volver a publicar</button>` : ""}
+    ${v.estado !== "cerrada" ? `<button class="btn peligro" data-estadovac="${v.id}|cerrada">Cerrar</button>` : ""}</div></article>`; }).join("") || `<div class="tarjeta"><p>Todavía no ha publicado trabajos.</p><button class="btn" data-ir="publicar">Publicar un trabajo</button></div>`}`;
 }
 function filaPostulado(p){
-  const t = usuario(p.trabId), v = vacante(p.vacId), {prom,n} = promedio(t.id), u = yo();
+  const t = usuario(p.trabId), v = vacante(p.vacId), {prom, n} = promedio(t.id), u = yo();
   return `<article class="tarjeta">
-    <div class="fila" style="display:flex;justify-content:space-between;gap:1rem"><div><h3>${esc(t.nombre)}, ${t.edad} años</h3>
-    <div class="meta">Para: <b>${esc(v.titulo)}</b> · ${esc(t.municipio)} · ${n?`${prom.toFixed(1)} ★ (${n})`:"sin reseñas"}</div></div>
-    <div class="compat">${compatibilidad(t,v)}%<small>compatible</small></div></div>
-    <p style="margin:.2rem 0">${esc(t.bio)}</p>
-    <div class="chips">${t.habilidades.map(h=>`<span class="chip ${v.etiquetas.includes(h)?"ok":""}">${esc(h)}</span>`).join("")}</div>
-    <div class="chips"><span>Identidad ${chipVerif(t.verif.identidad)}</span><span>Teléfono ${chipVerif(t.verif.telefono)}</span><span>Antecedentes ${chipVerif(t.verif.antecedentes)}</span></div>
-    ${lineaTiempo(p)}
-    <div class="acciones"><button class="btn sec chico" data-chat="${p.id}">Enviar mensaje</button>
-    ${["Enviada","En revisión"].includes(p.estado)?`<button class="btn chico" data-aceptar="${p.id}">Aceptar candidato</button><button class="btn peligro chico" data-rechazar="${p.id}">No seleccionar</button>`:""}
-    ${accionesContrato(p,u)}</div></article>`;
+    <h3 style="font-size:1.25rem;margin-bottom:.2rem">${esc(t.nombre)}, ${t.edad} años</h3>
+    <p style="margin:0;color:var(--gris)">Para: <b style="color:var(--tinta)">${esc(v.titulo)}</b> · vive en ${esc(t.municipio)}</p>
+    <p style="margin:.4rem 0">${queda(compatibilidad(t, v))} ${n ? `${estrellas(Math.round(prom))} <span>${prom.toFixed(1)} (${n} opiniones)</span>` : '<span style="color:var(--gris)">Sin opiniones todavía</span>'}</p>
+    <p>${esc(t.bio)}</p>
+    <div class="chips">${t.habilidades.map(h => `<span class="chip ${v.etiquetas.includes(h) ? "ok" : ""}">${esc(h)}</span>`).join("")}</div>
+    <ul class="datos"><li><span>INE</span><b>${chipVerif(t.verif.identidad)}</b></li><li><span>Teléfono</span><b>${chipVerif(t.verif.telefono)}</b></li><li><span>Antecedentes</span><b>${chipVerif(t.verif.antecedentes)}</b></li><li><span>Referencias</span><b>${chipVerif(t.verif.referencias)}</b></li></ul>
+    ${progreso(p, true)}
+    ${bloqueSigue(p, true)}
+    <div class="acciones">
+    ${["Enviada", "En revisión"].includes(p.estado) ? `<button class="btn" data-aceptar="${p.id}">${ic("check")} Aceptar a esta persona</button><button class="btn peligro" data-rechazar="${p.id}">No, gracias</button>` : ""}
+    ${accionesContrato(p, u)}<button class="btn sec" data-chat="${p.id}">${ic("mensaje")} Escribir mensaje</button></div></article>`;
 }
 function postulados(u){
-  const ids = db.vacantes.filter(v => v.empresaId === u.id).map(v=>v.id);
-  const posts = db.postulaciones.filter(p => ids.includes(p.vacId)).sort((a,b)=>b.fecha-a.fecha);
-  return `<h1>Personas postuladas</h1><p class="sub">Revise perfiles, converse y genere el contrato temporal.</p>
-  ${posts.length ? posts.map(filaPostulado).join("") : `<div class="tarjeta">Aún no hay personas postuladas.</div>`}`;
+  const posts = solicitudesDe(u).sort((a, b) => b.fecha - a.fecha);
+  return `<h1>Interesados</h1>${intro("Personas que quieren trabajar con usted. Cada tarjeta le dice qué sigue.")}
+  ${guia("¿Cómo contrato a alguien?", ["Revise su experiencia, sus opiniones y su verificación.", "Si le convence, toque <b>«Aceptar a esta persona»</b>. Solo puede aceptar a personas con INE y teléfono verificados.", "Lea y firme el contrato. La persona también lo firma.", "Toque <b>«Depositar el pago»</b>. Nosotros lo guardamos.", "Cuando el trabajo esté hecho, toque <b>«El trabajo ya se terminó»</b> y califique."])}
+  ${posts.length ? posts.map(filaPostulado).join("") : `<div class="tarjeta">Todavía no hay personas interesadas. Cuando alguien envíe su solicitud, aparecerá aquí.</div>`}`;
 }
 function perfilEmp(u){
-  if(esPart(u)) return `<h1>Mi perfil</h1>
-  <div class="tarjeta"><h2>Validación</h2><p class="sub">Quien trabaja para usted también quiere saber que usted es real.</p><table><tbody>
-    ${[["identidad","Identidad (INE)"],["telefono","Teléfono"]].map(([k,t])=>`<tr><td><b>${t}</b></td><td>${chipVerif(u.verif[k])}</td><td style="text-align:right">${u.verif[k]==="ok"?"":`<button class="btn chico" data-verif="${k}">${k==="telefono"?"Enviar código":"Subir INE"}</button>`}</td></tr>`).join("")}
+  if(esPart(u)) return `<h1>Mi perfil</h1>${intro("Quien trabaje con usted también quiere saber que usted es real.")}
+  <div class="tarjeta"><h2>Verificación</h2><table><tbody>
+    ${[["identidad", "Su INE", "Una foto de su credencial para votar"], ["telefono", "Su teléfono", "Le mandamos un código por mensaje"]].map(([k, t, d]) => `<tr><td><b>${t}</b><br><span style="color:var(--gris);font-size:.92rem">${d}</span></td><td>${chipVerif(u.verif[k])}</td><td style="text-align:right">${u.verif[k] === "ok" || u.verif[k] === "revision" ? "" : `<button class="btn chico" data-verif="${k}">${k === "telefono" ? "Verificar" : "Subir foto"}</button>`}</td></tr>`).join("")}
   </tbody></table></div>
-  <form class="tarjeta" id="fPerfilEmp" novalidate><h2>Datos de contacto</h2>
+  <form class="tarjeta" id="fPerfilEmp" novalidate><h2>Mis datos</h2>
     <div class="campo"><label for="eNombre">Nombre completo</label><input id="eNombre" value="${esc(u.nombre)}"></div>
-    <div class="campo"><label for="eTel">Teléfono</label><input id="eTel" value="${esc(u.tel)}"></div>
-    <button class="btn">Guardar cambios</button></form>
-  <div class="tarjeta"><b>Cómo paga:</b> sin cuota mensual. Solo 10 % sobre el pago de cada trabajo, al terminarlo.</div>`;
-  return `<h1>Perfil de la empresa</h1>
+    <div class="campo"><label for="eTel">Celular</label><input id="eTel" value="${esc(u.tel)}"></div>
+    <button class="btn ancho">Guardar mis datos</button></form>
+  <div class="aviso info"><span class="ico">${ic("dinero")}</span><div><b>Cómo paga:</b> sin cuota mensual. Solo 10 % del pago de cada trabajo, cuando se termina.</div></div>`;
+  return `<h1>Datos de la empresa</h1>${intro("Su información de contacto y su validación.")}
   <div class="tarjeta"><h2>Validación</h2><table><tbody>
-    <tr><td><b>RFC</b></td><td>${esc(u.rfc)}</td><td>${chipVerif("ok")}</td></tr>
-    <tr><td><b>Domicilio fiscal</b></td><td>${esc(u.municipio)}, Veracruz</td><td>${chipVerif("ok")}</td></tr>
-    <tr><td><b>Representante</b></td><td>${esc(u.contacto||"—")}</td><td>${chipVerif(u.verificada?"ok":"revision")}</td></tr></tbody></table></div>
+    <tr><td><b>RFC</b><br>${esc(u.rfc)}</td><td>${chipVerif("ok")}</td></tr>
+    <tr><td><b>Domicilio</b><br>${esc(u.municipio)}, Veracruz</td><td>${chipVerif("ok")}</td></tr>
+    <tr><td><b>Persona encargada</b><br>${esc(u.contacto || "—")}</td><td>${chipVerif(u.verificada ? "ok" : "revision")}</td></tr></tbody></table></div>
   <form class="tarjeta" id="fPerfilEmp" novalidate><h2>Datos de contacto</h2>
-    <div class="campo"><label for="eNombre">Razón social</label><input id="eNombre" value="${esc(u.nombre)}"></div>
-    <div class="campo"><label for="eGiro">Giro</label><input id="eGiro" value="${esc(u.giro||"")}"></div>
-    <div class="campo"><label for="eContacto">Persona de contacto</label><input id="eContacto" value="${esc(u.contacto||"")}"></div>
+    <div class="campo"><label for="eNombre">Nombre de la empresa</label><input id="eNombre" value="${esc(u.nombre)}"></div>
+    <div class="campo"><label for="eGiro">¿A qué se dedica?</label><input id="eGiro" value="${esc(u.giro || "")}"></div>
+    <div class="campo"><label for="eContacto">Persona encargada</label><input id="eContacto" value="${esc(u.contacto || "")}"></div>
     <div class="campo"><label for="eTel">Teléfono</label><input id="eTel" value="${esc(u.tel)}"></div>
-    <button class="btn">Guardar cambios</button></form>`;
+    <button class="btn ancho">Guardar cambios</button></form>`;
 }
 
 /* ---------- Mensajes ---------- */
@@ -613,120 +836,113 @@ function conversaciones(u){
   const emp = u.rol === "empresa";
   return db.postulaciones.filter(p => emp ? vacante(p.vacId).empresaId === u.id : p.trabId === u.id).map(p => {
     const ms = db.mensajes.filter(m => m.postId === p.id);
-    const ult = ms[ms.length-1];
-    const visto = db.avisos[u.id+"|"+p.id] || 0;
+    const ult = ms[ms.length - 1];
+    const visto = db.avisos[u.id + "|" + p.id] || 0;
     return {p, otro: emp ? usuario(p.trabId) : usuario(vacante(p.vacId).empresaId), ult, nuevo: !!(ult && ult.de !== u.id && ult.ts > visto)};
-  }).sort((a,b)=>((b.ult&&b.ult.ts)||b.p.fecha)-((a.ult&&a.ult.ts)||a.p.fecha));
+  }).sort((a, b) => ((b.ult && b.ult.ts) || b.p.fecha) - ((a.ult && a.ult.ts) || a.p.fecha));
 }
 function mensajes(u){
   const cs = conversaciones(u);
   if(!ui.conv && cs.length) ui.conv = cs[0].p.id;
   const act = cs.find(c => c.p.id === ui.conv);
-  if(act){ db.avisos[u.id+"|"+act.p.id] = Date.now(); guardar(); }
+  if(act){ db.avisos[u.id + "|" + act.p.id] = Date.now(); guardar(); }
   const ms = act ? db.mensajes.filter(m => m.postId === act.p.id) : [];
-  return `<h1>Mensajes</h1><p class="sub">Conversaciones protegidas: no comparta contraseñas ni datos bancarios.</p>
-  ${cs.length ? `<div class="chat"><div>${cs.map(c=>`<button class="conv" data-conv="${c.p.id}" aria-current="${c.p.id===ui.conv}"><b>${esc(c.otro.nombre)}</b>${c.nuevo?' <span class="badge">nuevo</span>':""}<br><small class="sub">${esc(vacante(c.p.vacId).titulo)}</small></button>`).join("")}</div>
-    <div class="tarjeta"><h3>${esc(act.otro.nombre)}</h3><div class="meta">${esc(vacante(act.p.vacId).titulo)} · ${esc(act.p.estado)}</div>
-      <div class="burbujas" id="burbujas">${ms.length?ms.map(m=>`<div class="bur ${m.de===u.id?"yo":m.de==="sistema"?"sis":""}">${esc(m.texto)}<small>${hace(m.ts)}</small></div>`).join(""):'<div class="bur sis">Inicie la conversación. Recuerde: nunca pida ni envíe dinero por adelantado.</div>'}</div>
-      <form id="fMsg" class="linea"><label for="mTxt" class="sr">Escriba su mensaje</label><input id="mTxt" autocomplete="off" placeholder="Escriba su mensaje"><button class="btn">Enviar</button></form>
-      <div class="acciones" style="margin-top:.6rem"><a class="btn sec chico" target="_blank" rel="noopener" href="https://wa.me/52${esc(act.otro.tel)}?text=${encodeURIComponent("Hola, le escribo por ReImpulso sobre: "+vacante(act.p.vacId).titulo)}">Continuar en WhatsApp</a></div>
+  return `<h1>Mensajes</h1>${intro("Platique con seguridad. Nunca comparta contraseñas, NIP ni datos de su tarjeta.")}
+  ${cs.length ? `<div class="chat"><div><p style="font-weight:700;margin:.2rem 0 .5rem">Elija con quién hablar:</p>${cs.map(c => `<button class="conv" data-conv="${c.p.id}" aria-current="${c.p.id === ui.conv}"><b>${esc(c.otro.nombre)}</b>${c.nuevo ? ' <span class="badge">nuevo</span>' : ""}<br><span style="color:var(--gris);font-size:.92rem">${esc(vacante(c.p.vacId).titulo)}</span></button>`).join("")}</div>
+    <div class="tarjeta"><h2 style="font-size:1.2rem;margin-bottom:.1rem">${esc(act.otro.nombre)}</h2><p style="color:var(--gris);margin-top:0">${esc(vacante(act.p.vacId).titulo)}</p>
+      <div class="burbujas" id="burbujas">${ms.length ? ms.map(m => `<div class="bur ${m.de === u.id ? "yo" : m.de === "sistema" ? "sis" : ""}">${m.de === "sistema" ? "<b>Aviso de ReImpulso:</b> " : ""}${esc(m.texto)}<small>${m.de === u.id ? "Usted, " : ""}${hace(m.ts)}</small></div>`).join("") : '<div class="bur sis">Escriba el primer mensaje. Recuerde: nadie le debe pedir dinero por adelantado.</div>'}</div>
+      <form id="fMsg"><label for="mTxt">Escriba su mensaje</label><div class="linea"><input id="mTxt" autocomplete="off" placeholder="Escriba aquí"><button class="btn">Enviar</button></div></form>
+      <div class="acciones" style="margin-top:.8rem"><a class="btn sec chico" target="_blank" rel="noopener" href="https://wa.me/52${esc(act.otro.tel)}?text=${encodeURIComponent("Hola, le escribo por ReImpulso sobre: " + vacante(act.p.vacId).titulo)}">${ic("whatsapp")} Seguir por WhatsApp</a></div>
     </div></div>`
-  : `<div class="tarjeta">Las conversaciones aparecen cuando hay una postulación.</div>`}`;
+  : `<div class="tarjeta">Aquí aparecerán sus conversaciones cuando ${u.rol === "empresa" ? "alguien se interese en uno de sus trabajos" : "envíe una solicitud"}.</div>`}`;
 }
 
-/* ---------- Reseñas ---------- */
+/* ---------- Calificaciones ---------- */
 function resenas(u){
-  const rs = db.resenas.filter(r => r.para === u.id).sort((a,b)=>b.ts-a.ts);
-  const {prom,n} = promedio(u.id);
-  const dist = [5,4,3,2,1].map(s => [s, rs.filter(r=>r.estrellas===s).length]);
-  const porCalificar = db.postulaciones.filter(p => p.estado==="Terminada" && (u.rol==="empresa" ? (vacante(p.vacId).empresaId===u.id && !p.calEmp) : (p.trabId===u.id && !p.calTrab)));
-  return `<h1>Calificaciones y reseñas</h1><p class="sub">Solo se pueden calificar quienes trabajaron juntos.</p>
-  ${porCalificar.map(p=>`<div class="aviso info"><span class="ico">★</span><div><b>Tiene una experiencia por calificar:</b> ${esc(vacante(p.vacId).titulo)}. <button class="btn chico" data-calificar="${p.id}">Calificar ahora</button></div></div>`).join("")}
-  <div class="tarjeta" style="display:grid;grid-template-columns:200px 1fr;gap:1.5rem;align-items:center">
-    <div style="text-align:center"><b style="font-family:Georgia;font-size:3rem">${n?prom.toFixed(1):"—"}</b><div style="color:var(--oro);font-size:1.4rem">${"★".repeat(Math.round(prom))}${"☆".repeat(5-Math.round(prom))}</div><small>${n} reseñas verificadas</small></div>
-    <div>${dist.map(([s,c])=>`<div style="display:flex;gap:.6rem;align-items:center;margin:.25rem 0"><span style="width:2.5em">${s} ★</span><div class="barra"><i style="width:${n?c/n*100:0}%"></i></div><span style="width:1.5em">${c}</span></div>`).join("")}</div>
-  </div>
-  ${rs.map(r=>`<div class="tarjeta"><b>${esc(usuario(r.de).nombre)}</b> <span style="color:var(--oro)">${"★".repeat(r.estrellas)}</span> <span class="chip ok">Reseña verificada</span><p style="margin:.4rem 0 0">${esc(r.texto)}</p><small class="sub">${hace(r.ts)}</small></div>`).join("") || '<div class="tarjeta">Aún no tiene reseñas.</div>'}`;
+  const rs = db.resenas.filter(r => r.para === u.id).sort((a, b) => b.ts - a.ts);
+  const {prom, n} = promedio(u.id);
+  const porCalificar = db.postulaciones.filter(p => p.estado === "Terminada" && (u.rol === "empresa" ? (vacante(p.vacId).empresaId === u.id && !p.calEmp) : (p.trabId === u.id && !p.calTrab)));
+  return `<h1>Mis calificaciones</h1>${intro("Lo que opinan de usted quienes ya trabajaron con usted. Solo pueden calificar quienes trabajaron juntos.")}
+  ${porCalificar.map(p => `<div class="aviso oro"><span class="ico">${ic("estrella")}</span><div><b>Tiene un trabajo por calificar:</b> ${esc(vacante(p.vacId).titulo)}<br><button class="btn chico" data-calificar="${p.id}">Calificar ahora</button></div></div>`).join("")}
+  <div class="tarjeta" style="text-align:center"><b style="font-family:Georgia,serif;font-size:3rem">${n ? prom.toFixed(1) : "—"}</b><div style="font-size:1.6rem">${estrellas(Math.round(prom))}</div><p>${n ? `De 5 estrellas, con ${n} ${n === 1 ? "opinión" : "opiniones"}` : "Todavía no tiene opiniones"}</p></div>
+  ${rs.map(r => `<div class="tarjeta"><b>${esc(usuario(r.de).nombre)}</b><br>${estrellas(r.estrellas)}<p style="margin:.4rem 0 .2rem;font-size:1.05rem">«${esc(r.texto)}»</p><span style="color:var(--gris);font-size:.92rem">${hace(r.ts)}</span></div>`).join("")}`;
 }
 
 /* ================= Acciones ================= */
-function ir(v){ ui.vista = v; ui.errores = {}; ui.borrador = {}; render(); $("#main") && $("#main").focus({preventScroll:true}); }
+function ir(v){ ui.vista = v; ui.errores = {}; ui.borrador = {}; render(); const m = $("#main"); m && m.focus({preventScroll:true}); }
 function enlazar(){
   const app = $("#app");
   app.querySelectorAll("[data-ir]").forEach(b => b.onclick = () => ir(b.dataset.ir));
-  document.querySelectorAll("[data-salir]").forEach(b => b.onclick = () => { db.sesion = null; guardar(); ui = {...ui, pestaña:"entrar", paso:1, borrador:{}, errores:{}, vista:"inicio", conv:null}; render(); });
-  const rein = $("#reiniciar"); rein && (rein.onclick = () => preguntar("¿Restablecer todos los datos de demostración? Se borran las cuentas y vacantes que haya creado.", "Sí, restablecer", () => { const s = db.sesion; db = semilla(); db.sesion = usuario(s) ? s : null; guardar(); ui.vista="inicio"; ui.conv=null; render(); toast("Datos restablecidos."); }));
-  // acceso
+  // entrar / registro
   app.querySelectorAll("[data-rol]").forEach(b => b.onclick = () => { ui.rolAcceso = b.dataset.rol; ui.errores = {}; ui.paso = 1; render(); });
   app.querySelectorAll("[data-tipo]").forEach(b => b.onclick = () => { ui.tipoContr = b.dataset.tipo; ui.errores = {}; render(); });
   app.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => { ui.pestaña = b.dataset.tab; ui.errores = {}; ui.paso = 1; render(); });
-  app.querySelectorAll("[data-demo]").forEach(b => b.onclick = () => { $("#cCorreo").value = b.dataset.demo; $("#cPass").value = "demo1234"; $("#fEntrar").requestSubmit(); });
   const vp = $("#verPass"); vp && (vp.onclick = () => { const i = $("#cPass"); i.type = i.type === "password" ? "text" : "password"; vp.textContent = i.type === "password" ? "Mostrar" : "Ocultar"; });
   const fe = $("#fEntrar"); fe && (fe.onsubmit = e => { e.preventDefault(); entrar(); });
   const f1 = $("#fPaso1"); f1 && (f1.onsubmit = e => { e.preventDefault(); paso1(); });
   const f2 = $("#fPaso2"); f2 && (f2.onsubmit = e => { e.preventDefault(); paso2(); });
   const at = $("#atras"); at && (at.onclick = () => { ui.paso = 1; ui.errores = {}; render(); });
-  // vacantes
-  const fil = (id, k) => { const el = $(id); el && (el.oninput = () => { ui.filtros[k] = el.value; const pos = el.selectionStart; render(); const n = $(id); n.focus(); if(pos!=null && n.setSelectionRange) try{n.setSelectionRange(pos,pos);}catch(e){} }); };
-  fil("#fQ","q"); fil("#fMun","mun"); fil("#fPlazo","plazo"); fil("#fMod","mod");
-  const lim = $("#limpiar"); lim && (lim.onclick = () => { ui.filtros = {q:"",mun:"Todas",plazo:"Cualquiera",mod:"Cualquiera"}; render(); });
+  // trabajos
+  const q = $("#fQ"); q && (q.oninput = () => { ui.filtros.q = q.value; const pos = q.selectionStart; render(); const n = $("#fQ"); n.focus(); try{ n.setSelectionRange(pos, pos); }catch(e){} });
+  ["fMun:mun", "fPlazo:plazo"].forEach(s => { const [id, k] = s.split(":"); const el = $("#" + id); el && (el.onchange = () => { ui.filtros[k] = el.value; render(); const n = $("#" + id); n && n.focus(); }); });
+  app.querySelectorAll("[data-cerca]").forEach(b => b.onclick = () => { ui.filtros.cerca = b.dataset.cerca; render(); });
+  const lim = $("#limpiar"); lim && (lim.onclick = () => { ui.filtros = {...FILTROS0}; render(); });
   app.querySelectorAll("[data-detalle]").forEach(b => b.onclick = () => detalle(b.dataset.detalle));
   app.querySelectorAll("[data-postular]").forEach(b => b.onclick = () => postular(b.dataset.postular));
   app.querySelectorAll("[data-chat]").forEach(b => b.onclick = () => { ui.conv = b.dataset.chat; ir("mensajes"); });
-  app.querySelectorAll("[data-conv]").forEach(b => b.onclick = () => { ui.conv = b.dataset.conv; render(); });
+  app.querySelectorAll("[data-conv]").forEach(b => b.onclick = () => { ui.conv = b.dataset.conv; render(); const t = $("#mTxt"); t && t.scrollIntoView({block:"center"}); });
   const fm = $("#fMsg"); fm && (fm.onsubmit = e => { e.preventDefault(); enviarMsg(); });
   const bu = $("#burbujas"); bu && (bu.scrollTop = bu.scrollHeight);
   // perfil
   app.querySelectorAll("[data-verif]").forEach(b => b.onclick = () => verificar(b.dataset.verif));
   const fp = $("#fPerfil"); fp && (fp.onsubmit = e => { e.preventDefault(); const u = yo();
-    const tel = $("#pTel").value.replace(/\D/g,"");
-    if(tel.length !== 10) return toast("El teléfono debe tener 10 dígitos.");
-    if(tel !== u.tel){ u.verif.telefono = "pendiente"; }
-    Object.assign(u, {nombre:$("#pNombre").value.trim()||u.nombre, tel, municipio:$("#pMun").value, disponibilidad:$("#pDisp").value, modalidad:$("#pMod").value, bio:$("#pBio").value.trim(),
-      habilidades:[...fp.querySelectorAll("input[name=hab]:checked")].map(i=>i.value)});
-    guardar(); render(); toast("Cambios guardados. Sus recomendaciones se actualizaron."); });
+    const tel = $("#pTel").value.replace(/\D/g, "");
+    if(tel.length !== 10) return toast("El celular debe tener 10 números.");
+    if(tel !== u.tel) u.verif.telefono = "pendiente";
+    Object.assign(u, {nombre:$("#pNombre").value.trim() || u.nombre, tel, municipio:$("#pMun").value, disponibilidad:$("#pDisp").value, modalidad:$("#pMod").value, bio:$("#pBio").value.trim(),
+      habilidades:[...fp.querySelectorAll("input[name=hab]:checked")].map(i => i.value)});
+    guardar(); render(); toast("Sus datos se guardaron. Ya actualizamos sus recomendaciones."); });
   const fpe = $("#fPerfilEmp"); fpe && (fpe.onsubmit = e => { e.preventDefault(); const u = yo();
-    Object.assign(u, {nombre:$("#eNombre").value.trim()||u.nombre, tel:$("#eTel").value.replace(/\D/g,"")||u.tel});
+    Object.assign(u, {nombre:$("#eNombre").value.trim() || u.nombre, tel:$("#eTel").value.replace(/\D/g, "") || u.tel});
     if(!esPart(u)) Object.assign(u, {giro:$("#eGiro").value.trim(), contacto:$("#eContacto").value.trim()});
-    guardar(); render(); toast("Datos guardados."); });
-  // empresa
+    guardar(); render(); toast("Sus datos se guardaron."); });
+  // quien contrata
   const fv = $("#fVac"); fv && (fv.onsubmit = e => { e.preventDefault(); publicarVac(fv); });
-  app.querySelectorAll("[data-estadovac]").forEach(b => b.onclick = () => { const [id,est] = b.dataset.estadovac.split("|"); vacante(id).estado = est; guardar(); render(); toast(est==="activa"?"Vacante reactivada.":est==="pausada"?"Vacante pausada: ya no aparece en búsquedas.":"Vacante cerrada."); });
+  app.querySelectorAll("[data-estadovac]").forEach(b => b.onclick = () => { const [id, est] = b.dataset.estadovac.split("|"); vacante(id).estado = est; guardar(); render(); toast(est === "activa" ? "El trabajo está publicado otra vez." : est === "pausada" ? "Trabajo en pausa: ya no aparece en las búsquedas." : "Trabajo cerrado."); });
   app.querySelectorAll("[data-aceptar]").forEach(b => b.onclick = () => aceptar(b.dataset.aceptar));
-  app.querySelectorAll("[data-rechazar]").forEach(b => b.onclick = () => { const p = db.postulaciones.find(x=>x.id===b.dataset.rechazar); p.estado = "No seleccionada"; sistema(p.id, "Quien publicó la vacante eligió a otra persona. ¡Siga postulándose!"); guardar(); render(); toast("Se avisó amablemente a la persona."); });
+  app.querySelectorAll("[data-rechazar]").forEach(b => b.onclick = () => { const p = post(b.dataset.rechazar);
+    preguntar(`¿Seguro que no quiere contratar a ${esc(usuario(p.trabId).nombre)}? Le avisaremos con amabilidad.`, "Sí, avisarle", () => {
+      p.estado = "No seleccionada"; sistema(p.id, "Esta vez eligieron a otra persona. ¡No se desanime y siga buscando!"); guardar(); render(); toast("Le avisamos a la persona con amabilidad."); }); });
   // contrato
-  document.querySelectorAll("[data-contrato]").forEach(b => b.onclick = () => verContrato(b.dataset.contrato));
-  document.querySelectorAll("[data-firmar]").forEach(b => b.onclick = () => firmar(b.dataset.firmar));
+  app.querySelectorAll("[data-contrato]").forEach(b => b.onclick = () => verContrato(b.dataset.contrato));
+  app.querySelectorAll("[data-firmar]").forEach(b => b.onclick = () => verContrato(b.dataset.firmar));
   app.querySelectorAll("[data-depositar]").forEach(b => b.onclick = () => depositar(b.dataset.depositar));
   app.querySelectorAll("[data-terminar]").forEach(b => b.onclick = () => terminar(b.dataset.terminar));
-  document.querySelectorAll("[data-calificar]").forEach(b => b.onclick = () => calificar(b.dataset.calificar));
-}
-function preguntar(texto, si, fn){
-  modal(`<h2>Confirme, por favor</h2><p>${esc(texto)}</p><div class="acciones"><button class="btn" id="pSi">${esc(si)}</button><button class="btn sec" data-cerrar>No, regresar</button></div>`,
-    m => m.querySelector("#pSi").onclick = () => { cerrarModal(); fn(); });
+  app.querySelectorAll("[data-calificar]").forEach(b => b.onclick = () => calificar(b.dataset.calificar));
 }
 function entrar(){
   const c = $("#cCorreo").value.trim().toLowerCase(), p = $("#cPass").value;
   ui.borrador = {correo:c}; ui.errores = {};
-  if(!/^\S+@\S+\.\S+$/.test(c)) ui.errores.correo = "Escriba un correo válido, por ejemplo nombre@correo.com";
+  if(!/^\S+@\S+\.\S+$/.test(c)) ui.errores.correo = "Revise su correo. Debe verse así: nombre@correo.com";
   if(!p) ui.errores.pass = "Escriba su contraseña.";
   if(Object.keys(ui.errores).length) return render();
   const u = db.usuarios.find(x => x.correo === c);
-  if(!u || u.pass !== p){ ui.errores.pass = "El correo o la contraseña no coinciden. Si lo olvidó, llámenos al 800 734 6785."; return render(); }
-  if(u.rol !== ui.rolAcceso){ ui.errores.correo = u.rol === "empresa" ? "Esta es una cuenta para contratar. Elija «Quiero contratar» arriba." : "Esta es una cuenta de trabajador. Elija «Soy trabajador» arriba."; return render(); }
-  db.sesion = u.id; guardar(); ui.borrador = {}; ui.vista = "inicio"; render(); toast(`Bienvenido, ${u.nombre.split(" ")[0]}.`);
+  if(!u || u.pass !== p){ ui.errores.pass = "El correo o la contraseña no coinciden. Revise que estén bien escritos. Si la olvidó, llámenos al 800 734 6785."; return render(); }
+  if(u.rol !== ui.rolAcceso){ ui.errores.correo = u.rol === "empresa" ? "Esta cuenta es para contratar. Arriba toque «Quiero contratar» y vuelva a entrar." : "Esta cuenta es de trabajador. Arriba toque «Busco trabajo» y vuelva a entrar."; return render(); }
+  db.sesion = u.id; guardar(); ui.borrador = {}; ui.vista = "inicio"; render();
+  bienvenida(u);
 }
 function paso1(){
   const emp = ui.rolAcceso === "empresa", b = ui.borrador = {};
-  b.nombre = $("#rNombre").value.trim(); b.tel = $("#rTel").value.replace(/\D/g,""); b.correo = $("#rCorreo").value.trim().toLowerCase();
+  b.nombre = $("#rNombre").value.trim(); b.tel = $("#rTel").value.replace(/\D/g, ""); b.correo = $("#rCorreo").value.trim().toLowerCase();
   const e = ui.errores = {};
-  if(b.nombre.length < 3) e.nombre = "Escriba el nombre completo.";
-  if(b.tel.length !== 10) e.tel = "El teléfono debe tener 10 dígitos (lada + número).";
-  if(!/^\S+@\S+\.\S+$/.test(b.correo)) e.correo = "Escriba un correo válido.";
-  else if(db.usuarios.some(u => u.correo === b.correo)) e.correo = "Ya existe una cuenta con este correo.";
   b.tipo = emp ? (ui.tipoContr || "particular") : null;
-  if(emp && b.tipo === "empresa"){ b.rfc = $("#rRfc").value.trim().toUpperCase(); if(!/^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/.test(b.rfc)) e.rfc = "El RFC no tiene un formato válido (3 o 4 letras, 6 números de la fecha y 3 caracteres)."; }
-  else if(!emp){ b.edad = Number($("#rEdad").value); if(!(b.edad >= 18 && b.edad <= 110)) e.edad = "Escriba su edad en números."; }
+  if(b.nombre.length < 3) e.nombre = "Escriba su nombre completo.";
+  if(b.tel.length !== 10) e.tel = "El celular debe tener 10 números, con la lada. Ejemplo: 229 123 4567";
+  if(!/^\S+@\S+\.\S+$/.test(b.correo)) e.correo = "Revise su correo. Debe verse así: nombre@correo.com";
+  else if(db.usuarios.some(u => u.correo === b.correo)) e.correo = "Ya existe una cuenta con este correo. Toque «Ya tengo cuenta» para entrar.";
+  if(emp && b.tipo === "empresa"){ b.rfc = $("#rRfc").value.trim().toUpperCase(); if(!/^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/.test(b.rfc)) e.rfc = "El RFC no está bien escrito. Revíselo en su constancia de situación fiscal."; }
+  else if(!emp){ b.edad = Number($("#rEdad").value); if(!(b.edad >= 18 && b.edad <= 110)) e.edad = "Escriba su edad con números. Ejemplo: 65"; }
   if(Object.keys(e).length) return render();
   ui.paso = 2; render();
 }
@@ -736,177 +952,181 @@ function paso2(){
   const pass = $("#rPass").value;
   if(emp && b.tipo === "empresa"){ b.giro = $("#rGiro").value.trim(); if(!b.giro) e.giro = "Escriba a qué se dedica la empresa."; }
   else if(emp){ b.giro = ""; }
-  else { b.habilidades = [...document.querySelectorAll("input[name=hab]:checked")].map(i=>i.value); b.modalidad = $("#rMod").value; if(!b.habilidades.length) e.hab = "Elija al menos una habilidad."; }
-  if(pass.length < 8 || !/\d/.test(pass)) e.pass = "La contraseña necesita 8 caracteres y al menos un número.";
-  if(!$("#rPriv").checked) e.priv = "Para continuar debe aceptar el aviso de privacidad.";
+  else { b.habilidades = [...document.querySelectorAll("input[name=hab]:checked")].map(i => i.value); b.modalidad = $("#rMod").value; if(!b.habilidades.length) e.hab = "Marque por lo menos una cosa que sepa hacer."; }
+  if(pass.length < 8 || !/\d/.test(pass)) e.pass = "La contraseña debe tener al menos 8 letras o números, y por lo menos un número.";
+  if(!$("#rPriv").checked) e.priv = "Para continuar, marque la casilla del aviso de privacidad.";
   if(Object.keys(e).length) return render();
   const u = emp
     ? (b.tipo === "particular"
       ? {id:uid("e"),rol:"empresa",tipo:"particular",nombre:b.nombre,correo:b.correo,pass,tel:b.tel,municipio:b.municipio,giro:"",contacto:"",verificada:false,verif:{identidad:"pendiente",telefono:"pendiente"}}
       : {id:uid("e"),rol:"empresa",tipo:"empresa",nombre:b.nombre,correo:b.correo,pass,tel:b.tel,rfc:b.rfc,municipio:b.municipio,giro:b.giro,contacto:"",verificada:true})
     : {id:uid("u"),rol:"trabajador",nombre:b.nombre,correo:b.correo,pass,tel:b.tel,edad:b.edad,municipio:b.municipio,habilidades:b.habilidades,modalidad:b.modalidad,disponibilidad:"Cualquier horario",bio:"",verif:{identidad:"pendiente",telefono:"pendiente",antecedentes:"pendiente",referencias:"pendiente"}};
-  db.usuarios.push(u); db.sesion = u.id; guardar();
+  db.usuarios.push(u); db.sesion = u.id; db.avisos[u.id + "|guia"] = 0; guardar();
   ui.borrador = {}; ui.paso = 1; ui.vista = emp && u.tipo === "empresa" ? "inicio" : "perfil"; render();
-  toast(emp && u.tipo === "empresa" ? "Cuenta creada. Validamos su RFC: ya puede publicar vacantes." : "Cuenta creada. Ahora verifique su identidad (INE) y su teléfono.");
+  toast(emp && u.tipo === "empresa" ? "Su cuenta está lista. Validamos su RFC: ya puede publicar trabajos." : "Su cuenta está lista. Ahora verifique su INE y su teléfono.");
+  bienvenida(u);
 }
 function detalle(id){
-  const v = vacante(id), e = usuario(v.empresaId), u = yo(), {prom,n} = promedio(e.id);
+  const v = vacante(id), e = usuario(v.empresaId), u = yo(), {prom, n} = promedio(e.id);
   const ya = db.postulaciones.some(p => p.vacId === id && p.trabId === u.id);
-  const texto = `${v.titulo}. Publicada por: ${e.nombre}. ${v.descripcion}. Lugar: ${v.municipio}, ${v.modalidad}. Horario: ${v.horario}. Pago: ${v.pago} pesos por el periodo de ${v.plazo}.`;
-  modal(`<div class="emp" style="color:var(--verde);font-weight:800;font-size:.85rem;text-transform:uppercase">${esc(e.nombre)}</div>
+  const texto = `${v.titulo}. Lo publica: ${e.nombre}. ${v.descripcion}. Lugar: ${MODALIDAD[v.modalidad]}, ${v.municipio}. Horario: ${v.horario}. Dura ${v.plazo}. Pago: ${v.pago} pesos por todo el trabajo.`;
+  modal(`<p style="font-weight:700;color:var(--verde);margin:0">${esc(e.nombre)}${esPart(e) ? " (persona)" : ""}</p>
     <h2>${esc(v.titulo)}</h2>
-    <button class="btn sec chico" id="leer">🔊 Leer en voz alta</button>
-    <p>${esc(v.descripcion)}</p>
+    <button class="btn sec" id="leer">${ic("voz")} Escuchar en voz alta</button>
+    <p style="font-size:1.05rem;margin-top:1rem">${esc(v.descripcion)}</p>
     <table><tbody>
-      <tr><th>Lugar</th><td>${esc(v.municipio)} · ${esc(v.modalidad)}</td></tr>
-      <tr><th>Horario</th><td>${esc(v.horario)}</td></tr><tr><th>Duración</th><td>${esc(v.plazo)}</td></tr>
-      <tr><th>Pago</th><td><b>${dinero(v.pago)}</b> por el periodo, protegido por ReImpulso</td></tr>
+      <tr><th>Dónde</th><td>${esc(MODALIDAD[v.modalidad])}${v.modalidad === "Remoto" ? "" : ", " + esc(v.municipio)}</td></tr>
+      <tr><th>Horario</th><td>${esc(v.horario)}</td></tr><tr><th>Cuánto dura</th><td>${esc(v.plazo)}</td></tr>
+      <tr><th>Pago</th><td><b>${dinero(v.pago)}</b> por todo el trabajo. Se guarda antes de empezar.</td></tr>
       <tr><th>Esfuerzo físico</th><td>${esc(v.esfuerzo)}</td></tr>
-      <tr><th>Quién contrata</th><td>${esPart(e)?"Persona particular":"Empresa"} ${sello(e)} ${n?`${prom.toFixed(1)} ★ (${n} reseñas)`:""}</td></tr>
+      <tr><th>Quién lo publica</th><td>${esPart(e) ? "Una persona" : "Una empresa"} ${sello(e)}${n ? `<br>${estrellas(Math.round(prom))} ${prom.toFixed(1)} (${n} opiniones)` : ""}</td></tr>
     </tbody></table>
-    <div class="aviso alerta" style="margin-top:1rem"><span class="ico">!</span><div>Nadie le debe pedir dinero para darle un trabajo. Si pasa, repórtelo al 800 734 6785.</div></div>
-    <div class="acciones">${ya?'<button class="btn" disabled>Ya se postuló</button>':`<button class="btn" id="mPost">Postular rápido</button>`}<button class="btn sec" data-cerrar>Regresar</button></div>`,
+    <div class="aviso alerta" style="margin-top:1rem"><span class="ico">${ic("alerta")}</span><div>Nadie le debe pedir dinero para darle un trabajo. Si le pasa, llámenos al 800 734 6785.</div></div>
+    <div class="acciones">${ya ? `<button class="btn" disabled>${ic("check")} Ya envió su solicitud</button>` : `<button class="btn" id="mPost">Me interesa</button>`}<button class="btn sec" data-cerrar>Regresar</button></div>`,
     m => { m.querySelector("#leer").onclick = () => leer(texto); const b = m.querySelector("#mPost"); b && (b.onclick = () => { cerrarModal(); postular(id); }); });
 }
 function postular(id){
   const v = vacante(id), u = yo();
-  modal(`<h2>¿Confirma su postulación?</h2><p>Se enviará su perfil a <b>${esc(usuario(v.empresaId).nombre)}</b> para la vacante <b>${esc(v.titulo)}</b>.</p>
-    <p class="sub">Quien contrata verá su nombre, edad, municipio, experiencia y calificaciones. Su teléfono no se comparte hasta que usted lo decida.</p>
-    <div class="acciones"><button class="btn" id="si">Sí, postularme</button><button class="btn sec" data-cerrar>No, regresar</button></div>`,
+  modal(`<h2>¿Quiere enviar su solicitud?</h2><p style="font-size:1.1rem">Para: <b>${esc(v.titulo)}</b><br>Con: <b>${esc(usuario(v.empresaId).nombre)}</b></p>
+    <div class="aviso info"><span class="ico">${ic("info")}</span><div>Le mostraremos su nombre, edad, municipio, experiencia y opiniones. <b>Su teléfono no se comparte</b> hasta que usted lo decida.</div></div>
+    <div class="acciones"><button class="btn" id="si">Sí, enviar mi solicitud</button><button class="btn sec" data-cerrar>No, regresar</button></div>`,
     m => m.querySelector("#si").onclick = () => {
-      const p = {id:uid("p"),vacId:id,trabId:u.id,estado:"Enviada",fecha:Date.now(),contrato:null,calTrab:null,calEmp:null};
-      db.postulaciones.push(p); sistema(p.id, `${u.nombre} se postuló a «${v.titulo}».`); guardar(); cerrarModal(); render();
-      toast("¡Listo! Su postulación fue enviada. Le avisaremos cuando le respondan.");
+      const p = {id:uid("p"), vacId:id, trabId:u.id, estado:"Enviada", fecha:Date.now(), contrato:null, calTrab:null, calEmp:null};
+      db.postulaciones.push(p); sistema(p.id, `${u.nombre} envió su solicitud para «${v.titulo}».`); guardar(); cerrarModal(); render();
+      toast("¡Listo! Su solicitud fue enviada. Puede verla en «Mis solicitudes».");
     });
 }
-function sistema(postId, texto){ db.mensajes.push({id:uid("m"),postId,de:"sistema",texto,ts:Date.now()}); }
+function sistema(postId, texto){ db.mensajes.push({id:uid("m"), postId, de:"sistema", texto, ts:Date.now()}); }
 const PATRONES = [
-  [/\b\d{18}\b/, "Parece un número CLABE. Por seguridad no se pueden enviar datos bancarios por chat; el pago se hace por ReImpulso."],
-  [/\b(?:\d[ -]?){15,16}\b/, "Parece un número de tarjeta. Por seguridad no se envía."],
-  [/contraseña|password|\bnip\b|código de verificación|codigo de verificacion/i, "No comparta contraseñas, NIP ni códigos. Nadie de ReImpulso se los pedirá."],
-  [/(deposit|transfer|anticipo|adelant).{0,40}(para|antes).{0,30}(trabajo|puesto|contrat|vacante)/i, "Pedir dinero a cambio de un trabajo es una señal de fraude. Repórtelo al 800 734 6785."]
+  [/\b\d{18}\b/, "Parece un número de cuenta (CLABE). Por su seguridad no se envían datos del banco por aquí: el pago se hace por ReImpulso."],
+  [/\b(?:\d[ -]?){15,16}\b/, "Parece un número de tarjeta. Por su seguridad no lo enviamos."],
+  [/contraseña|password|\bnip\b|código de verificación|codigo de verificacion/i, "No comparta contraseñas, NIP ni códigos. Nadie de ReImpulso se los va a pedir."],
+  [/(deposit|transfer|anticipo|adelant).{0,40}(para|antes).{0,30}(trabajo|puesto|contrat|vacante)/i, "Pedir dinero a cambio de un trabajo es señal de fraude. Llámenos al 800 734 6785."]
 ];
 function enviarMsg(){
-  const inp = $("#mTxt"), t = inp.value.trim(); if(!t) return;
-  for(const [re,msg] of PATRONES){ if(re.test(t)){ modal(`<div class="aviso alerta"><span class="ico">!</span><div><b>Mensaje detenido para protegerle.</b><br>${msg}</div></div><button class="btn" data-cerrar>Entendido</button>`); return; } }
-  db.mensajes.push({id:uid("m"),postId:ui.conv,de:yo().id,texto:t,ts:Date.now()}); guardar(); render(); $("#mTxt").focus();
+  const inp = $("#mTxt"), t = inp.value.trim(); if(!t) return toast("Primero escriba su mensaje.");
+  for(const [re, msg] of PATRONES){ if(re.test(t)){ modal(`<div class="aviso alerta"><span class="ico">${ic("escudo")}</span><div><b>Detuvimos este mensaje para protegerle.</b><br>${msg}</div></div><button class="btn ancho" data-cerrar>Entendido</button>`); return; } }
+  db.mensajes.push({id:uid("m"), postId:ui.conv, de:yo().id, texto:t, ts:Date.now()}); guardar(); render(); toast("Mensaje enviado."); $("#mTxt").focus();
 }
 function verificar(k){
   const u = yo();
   if(k === "telefono"){
-    const cod = String(Math.floor(1000 + Math.random()*9000));
-    toast(`Le enviamos un SMS al ${u.tel}. (Demostración: el código es ${cod})`);
-    modal(`<h2>Verificar teléfono</h2><p>Escriba el código de 4 números que le llegó por mensaje al <b>${esc(u.tel)}</b>.</p>
-      <div class="campo"><label for="cod">Código</label><input id="cod" inputmode="numeric" maxlength="4"><div class="ayuda">Demostración: el código es <b>${cod}</b></div><div class="error" id="codErr"></div></div>
-      <button class="btn" id="ok">Verificar</button>`, m => m.querySelector("#ok").onclick = () => {
-        if(m.querySelector("#cod").value.trim() === cod){ u.verif.telefono = "ok"; guardar(); cerrarModal(); render(); toast("Teléfono verificado ✓"); }
-        else m.querySelector("#codErr").textContent = "El código no coincide. Revise su mensaje e inténtelo de nuevo.";
+    const cod = String(Math.floor(1000 + Math.random() * 9000));
+    modal(`<h2>Verificar su teléfono</h2><p style="font-size:1.05rem">Le mandamos un mensaje al <b>${esc(u.tel)}</b> con un código de 4 números. Escríbalo aquí:</p>
+      <div class="campo"><label for="cod">Código</label><input id="cod" data-foco inputmode="numeric" maxlength="4" style="font-size:1.6rem;letter-spacing:.3em;text-align:center"><div class="ayuda">En esta versión de prueba no se mandan mensajes. Su código es: <b>${cod}</b></div><div class="error" id="codErr"></div></div>
+      <button class="btn ancho" id="ok">Verificar</button>`, m => m.querySelector("#ok").onclick = () => {
+        if(m.querySelector("#cod").value.trim() === cod){ u.verif.telefono = "ok"; guardar(); cerrarModal(); render(); toast("Su teléfono quedó verificado."); }
+        else m.querySelector("#codErr").textContent = "El código no coincide. Revíselo e inténtelo otra vez.";
       });
   } else if(k === "identidad"){
-    modal(`<h2>Verificar identidad</h2><p>Tome una foto de su INE por ambos lados. Un asesor la revisa en minutos.</p>
-      <div class="campo"><label for="ine">Foto de la INE</label><input id="ine" type="file" accept="image/*,.pdf"></div>
-      <button class="btn" id="ok">Enviar a revisión</button>`, m => m.querySelector("#ok").onclick = () => {
+    modal(`<h2>Verificar su INE</h2><ol style="font-size:1.05rem;padding-left:1.4rem"><li>Ponga su credencial sobre una mesa con buena luz.</li><li>Tome una foto de cada lado.</li><li>Toque el botón de abajo y elija la foto.</li></ol>
+      <div class="campo"><label for="ine">Foto de su INE</label><input id="ine" type="file" accept="image/*,.pdf"></div>
+      <button class="btn ancho" id="ok">Enviar para revisión</button>`, m => m.querySelector("#ok").onclick = () => {
         if(!m.querySelector("#ine").files.length) return toast("Primero elija la foto de su INE.");
-        u.verif.identidad = "revision"; guardar(); cerrarModal(); render(); toast("Recibimos su INE. La revisión tarda unos segundos en esta demostración.");
-        setTimeout(() => { u.verif.identidad = "ok"; guardar(); if(yo()===u) render(); toast("Identidad verificada ✓"); }, 3500);
+        u.verif.identidad = "revision"; guardar(); cerrarModal(); render(); toast("Recibimos su INE. La estamos revisando, tarda unos segundos.");
+        setTimeout(() => { u.verif.identidad = "ok"; guardar(); if(yo() === u) render(); toast("Su INE quedó verificada."); }, 3500);
       });
   } else {
-    u.verif[k] = "revision"; guardar(); render(); toast(k==="antecedentes"?"Consultando constancia de antecedentes…":"Contactando a sus referencias…");
-    setTimeout(() => { u.verif[k] = "ok"; guardar(); if(yo()===u) render(); toast((k==="antecedentes"?"Antecedentes":"Referencias")+" verificados ✓"); }, 3000);
+    u.verif[k] = "revision"; guardar(); render(); toast(k === "antecedentes" ? "Estamos revisando sus antecedentes…" : "Estamos llamando a sus referencias…");
+    setTimeout(() => { u.verif[k] = "ok"; guardar(); if(yo() === u) render(); toast((k === "antecedentes" ? "Antecedentes" : "Referencias") + " verificados."); }, 3000);
   }
 }
 function publicarVac(f){
-  const b = ui.borrador = {titulo:$("#vTit").value.trim(),descripcion:$("#vDesc").value.trim(),municipio:$("#vMun").value,modalidad:$("#vMod").value,plazo:$("#vPlazo").value,
-    horario:$("#vHor").value.trim(),pago:$("#vPago").value.replace(/[^\d]/g,""),esfuerzo:$("#vEsf").value,etiquetas:[...f.querySelectorAll("input[name=hab]:checked")].map(i=>i.value)};
+  const b = ui.borrador = {titulo:$("#vTit").value.trim(), descripcion:$("#vDesc").value.trim(), municipio:$("#vMun").value, modalidad:$("#vMod").value, plazo:$("#vPlazo").value,
+    horario:$("#vHor").value.trim(), pago:$("#vPago").value.replace(/[^\d]/g, ""), esfuerzo:$("#vEsf").value, etiquetas:[...f.querySelectorAll("input[name=hab]:checked")].map(i => i.value)};
   const e = ui.errores = {};
-  if(b.titulo.length < 5) e.titulo = "Escriba un título claro (mínimo 5 letras).";
-  if(b.descripcion.length < 20) e.descripcion = "Describa las actividades con un poco más de detalle.";
-  if(!b.horario) e.horario = "Indique el horario.";
-  const minimo = Math.round({"Unas horas":315.04/8*3,"1 día":315.04,"1 semana":315.04/2*5,"1 mes":315.04/2*22,"3 meses":315.04/2*66}[b.plazo]);
-  const expl = {"Unas horas":"3 horas con salario mínimo","1 día":"un día con salario mínimo"}[b.plazo] || "medio tiempo con salario mínimo";
-  if(!b.pago) e.pago = "Indique el pago total.";
-  else if(Number(b.pago) < minimo) e.pago = `Para ${b.plazo.toLowerCase()} el pago mínimo sugerido es ${dinero(minimo)} (${expl}).`;
-  if(!b.etiquetas.length) e.etiquetas = "Elija al menos una habilidad.";
-  if(Object.keys(e).length) return render();
-  const v = {id:uid("v"),empresaId:yo().id,...b,pago:Number(b.pago),estado:"activa",fecha:Date.now()};
+  if(b.titulo.length < 5) e.titulo = "Escriba un nombre más claro para el trabajo.";
+  if(b.descripcion.length < 20) e.descripcion = "Explique con un poco más de detalle qué hay que hacer.";
+  if(!b.horario) e.horario = "Escriba los días y el horario.";
+  const minimo = Math.round({"Unas horas":315.04 / 8 * 3, "1 día":315.04, "1 semana":315.04 / 2 * 5, "1 mes":315.04 / 2 * 22, "3 meses":315.04 / 2 * 66}[b.plazo]);
+  const expl = {"Unas horas":"3 horas con salario mínimo", "1 día":"un día con salario mínimo"}[b.plazo] || "medio tiempo con salario mínimo";
+  if(!b.pago) e.pago = "Escriba cuánto va a pagar.";
+  else if(Number(b.pago) < minimo) e.pago = `Para ${b.plazo.toLowerCase()}, lo mínimo justo es ${dinero(minimo)} (${expl}).`;
+  if(!b.etiquetas.length) e.etiquetas = "Marque por lo menos una cosa que deba saber hacer.";
+  if(Object.keys(e).length){ render(); const er = document.querySelector(".error"); er && er.scrollIntoView({block:"center"}); return; }
+  const v = {id:uid("v"), empresaId:yo().id, ...b, pago:Number(b.pago), estado:"activa", fecha:Date.now()};
   db.vacantes.push(v);
-  const n = db.usuarios.filter(u => u.rol==="trabajador" && compatibilidad(u,v) >= 50).length;
+  const n = db.usuarios.filter(u => u.rol === "trabajador" && compatibilidad(u, v) >= 50).length;
   guardar(); ui.borrador = {}; ui.vista = "misvacantes"; render();
-  toast(`Vacante publicada. Avisamos a ${n} ${n===1?"persona compatible":"personas compatibles"}.`);
+  toast(`Su trabajo quedó publicado. Avisamos a ${n} ${n === 1 ? "persona" : "personas"} que encajan.`);
 }
 function aceptar(id){
-  const p = db.postulaciones.find(x=>x.id===id), t = usuario(p.trabId), v = vacante(p.vacId);
-  const yoC = yo();
+  const p = post(id), t = usuario(p.trabId), v = vacante(p.vacId), yoC = yo();
   if(esPart(yoC) && !verificado(yoC)){
-    modal(`<div class="aviso alerta"><span class="ico">!</span><div><b>Primero verifique su identidad.</b><br>Para proteger a quien va a trabajar con usted, necesita verificar su INE y su teléfono antes de aceptar a alguien.</div></div>
-      <div class="acciones"><button class="btn" data-cerrar data-ir="perfil">Ir a mi perfil</button></div>`, m => m.querySelector("[data-ir]").onclick = () => { cerrarModal(); ir("perfil"); });
+    modal(`<div class="aviso alerta"><span class="ico">${ic("alerta")}</span><div><b>Primero verifique su identidad.</b><br>Para proteger a quien va a trabajar con usted, necesita verificar su INE y su teléfono antes de aceptar a alguien.</div></div>
+      <button class="btn ancho" id="irPerfil">Ir a verificarme</button>`, m => m.querySelector("#irPerfil").onclick = () => { cerrarModal(); ir("perfil"); });
     return;
   }
   // Punto de decisión del diagrama de flujo: ¿datos completos y verificados?
   if(!verificado(t)){
-    const falta = ["identidad","telefono"].filter(k => t.verif[k] !== "ok").map(k => k==="telefono"?"teléfono":k);
-    modal(`<div class="aviso alerta"><span class="ico">!</span><div><b>Todavía no se puede generar el contrato.</b><br>${esc(t.nombre)} no ha verificado: ${falta.join(" y ")}.</div></div>
-      <p>ReImpulso le pedirá que corrija sus datos. Cuando lo haga, podrá aceptarle.</p>
-      <div class="acciones"><button class="btn" id="pedir">Pedir corrección de datos</button><button class="btn sec" data-cerrar>Cancelar</button></div>`,
-      m => m.querySelector("#pedir").onclick = () => { p.estado = "En revisión"; sistema(p.id, `ReImpulso: para continuar con «${v.titulo}» falta verificar ${falta.join(" y ")} en su perfil.`); guardar(); cerrarModal(); render(); toast("Se envió la solicitud de corrección."); });
+    const falta = ["identidad", "telefono"].filter(k => t.verif[k] !== "ok").map(k => k === "telefono" ? "su teléfono" : "su INE");
+    modal(`<div class="aviso alerta"><span class="ico">${ic("alerta")}</span><div><b>Todavía no se puede hacer el contrato.</b><br>${esc(t.nombre)} no ha verificado ${falta.join(" ni ")}.</div></div>
+      <p style="font-size:1.05rem">Le pediremos que lo haga. Cuando termine, podrá aceptarle.</p>
+      <div class="acciones"><button class="btn" id="pedir">Pedirle que se verifique</button><button class="btn sec" data-cerrar>Regresar</button></div>`,
+      m => m.querySelector("#pedir").onclick = () => { p.estado = "En revisión"; sistema(p.id, `Para seguir con «${v.titulo}» falta que verifique ${falta.join(" y ")}. Entre a «Mi perfil» para hacerlo.`); guardar(); cerrarModal(); render(); toast("Le pedimos que verifique sus datos."); });
     return;
   }
-  p.estado = "Aceptada"; p.contrato = {firmaEmp:null,firmaTrab:null,deposito:null,liberado:null,generado:Date.now()};
-  sistema(p.id, `¡Buenas noticias! ${yoC.nombre} aceptó la postulación. Ya está listo el contrato temporal digital para firmar.`);
+  p.estado = "Aceptada"; p.contrato = {firmaEmp:null, firmaTrab:null, deposito:null, liberado:null, generado:Date.now()};
+  sistema(p.id, `¡Buenas noticias! ${yoC.nombre} aceptó la solicitud. El contrato ya está listo para firmar.`);
   guardar(); render(); verContrato(id);
 }
 function textoContrato(p){
   const v = vacante(p.vacId), e = usuario(v.empresaId), t = usuario(p.trabId), c = p.contrato;
-  const f = ts => ts ? `✓ Firmado ${new Date(ts).toLocaleDateString("es-MX")}` : "Pendiente de firma";
-  return `<div class="contrato"><h3>Contrato de prestación de servicio temporal</h3>
-    <p><b>Folio:</b> RI-${p.id.toUpperCase()}<br><b>Contratante:</b> ${esc(e.nombre)} (${esPart(e)?"persona particular, INE verificada":"RFC "+esc(e.rfc)})<br><b>Persona que presta el servicio:</b> ${esc(t.nombre)}</p>
-    <p><b>Servicio:</b> ${esc(v.titulo)}. ${esc(v.descripcion)}</p>
-    <p><b>Lugar y modalidad:</b> ${esc(v.municipio)}, ${esc(v.modalidad)} · <b>Horario:</b> ${esc(v.horario)} · <b>Duración:</b> ${esc(v.plazo)}</p>
-    <p><b>Pago:</b> ${dinero(v.pago)}. Quien contrata lo deposita en la cuenta protegida de ReImpulso antes de iniciar y se libera a la persona al confirmar el servicio terminado. La comisión de ReImpulso (10 %) la paga quien contrata; a la persona no se le descuenta nada.</p>
-    <p><b>Cláusulas:</b> actividades de esfuerzo físico ${esc(v.esfuerzo.toLowerCase())}; cualquiera de las partes puede terminar el acuerdo avisando con 24 horas; los datos personales se tratan conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.</p>
-    <table><tbody><tr><th>${esPart(e)?"Contratante":"Empresa"}</th><td>${f(c.firmaEmp)}</td></tr><tr><th>Trabajador</th><td>${f(c.firmaTrab)}</td></tr>
-    <tr><th>Pago protegido</th><td>${c.deposito?"✓ Depositado":"Pendiente"}${c.liberado?" · ✓ Liberado":""}</td></tr></tbody></table>
-    <p style="font-size:.8rem;color:var(--gris);margin-bottom:0">Documento de demostración del prototipo; el contrato real debe revisarlo un abogado.</p></div>`;
+  const f = ts => ts ? `<span class="chip ok">${ic("check", 16)} Firmó el ${new Date(ts).toLocaleDateString("es-MX")}</span>` : '<span class="chip pend">Falta firmar</span>';
+  return `<div class="contrato"><h3>Contrato de trabajo temporal</h3>
+    <div class="resumen-c"><b>En pocas palabras:</b> ${esc(t.nombre)} hará «${esc(v.titulo)}» para ${esc(e.nombre)} durante ${esc(v.plazo)}, y recibirá <b>${dinero(v.pago)}</b>. El dinero se guarda antes de empezar y se entrega al terminar.</div>
+    <p><b>Número de contrato:</b> RI-${p.id.toUpperCase()}<br><b>Contrata:</b> ${esc(e.nombre)} (${esPart(e) ? "persona, INE verificada" : "RFC " + esc(e.rfc)})<br><b>Trabaja:</b> ${esc(t.nombre)}</p>
+    <p><b>Qué se hará:</b> ${esc(v.descripcion)}</p>
+    <p><b>Dónde y cuándo:</b> ${esc(MODALIDAD[v.modalidad])}, ${esc(v.municipio)}. ${esc(v.horario)}. Dura ${esc(v.plazo)}.</p>
+    <p><b>Pago:</b> ${dinero(v.pago)}. Quien contrata lo deposita a ReImpulso antes de empezar. Se entrega a la persona cuando se confirma que el trabajo quedó hecho. La comisión de ReImpulso (10 %) la paga quien contrata; a la persona no se le descuenta nada.</p>
+    <p><b>Otros acuerdos:</b> el trabajo es de esfuerzo físico ${esc(v.esfuerzo.toLowerCase())}. Cualquiera de los dos puede terminar el acuerdo avisando con 24 horas. Los datos personales se cuidan según la ley de protección de datos.</p>
+    <table><tbody><tr><th>${esPart(e) ? "Quien contrata" : "Empresa"}</th><td>${f(c.firmaEmp)}</td></tr><tr><th>Trabajador</th><td>${f(c.firmaTrab)}</td></tr>
+    <tr><th>Pago</th><td>${c.liberado ? '<span class="chip ok">Entregado</span>' : c.deposito ? '<span class="chip ok">Guardado</span>' : '<span class="chip pend">Falta depositar</span>'}</td></tr></tbody></table></div>`;
 }
 function verContrato(id){
-  const p = db.postulaciones.find(x=>x.id===id), u = yo(), emp = u.rol==="empresa", c = p.contrato;
+  const p = post(id), u = yo(), emp = u.rol === "empresa", c = p.contrato;
   const puede = p.estado === "Aceptada" && ((emp && !c.firmaEmp) || (!emp && !c.firmaTrab));
-  modal(textoContrato(p) + (puede ? `<div class="campo" style="margin-top:1rem"><label class="check"><input type="checkbox" id="acepto"> Leí el contrato y estoy de acuerdo.</label></div><button class="btn" id="firmarM">Firmar contrato</button>` : ""),
-    m => { const b = m.querySelector("#firmarM"); b && (b.onclick = () => { if(!m.querySelector("#acepto").checked) return toast("Marque la casilla para confirmar que leyó el contrato."); firmarAhora(p); }); });
+  modal(textoContrato(p) + (puede ? `<div class="campo" style="margin-top:1.2rem"><label class="check"><input type="checkbox" id="acepto"> Leí el contrato y estoy de acuerdo.</label><div class="error" id="aceptoErr"></div></div><button class="btn ancho" id="firmarM">${ic("firma")} Firmar el contrato</button>` : ""),
+    m => { const b = m.querySelector("#firmarM"); b && (b.onclick = () => { if(!m.querySelector("#acepto").checked){ m.querySelector("#aceptoErr").textContent = "Primero marque la casilla para decir que leyó el contrato."; return; } firmarAhora(p); }); });
 }
-function firmar(id){ verContrato(id); }
 function firmarAhora(p){
-  const u = yo(), emp = u.rol==="empresa";
+  const u = yo(), emp = u.rol === "empresa";
   if(emp) p.contrato.firmaEmp = Date.now(); else p.contrato.firmaTrab = Date.now();
-  sistema(p.id, `${u.nombre} firmó el contrato digital.`);
-  if(p.contrato.firmaEmp && p.contrato.firmaTrab){ p.estado = "Contrato firmado"; sistema(p.id, "Contrato firmado por ambas partes. Quien contrata debe depositar el pago protegido para iniciar."); }
+  sistema(p.id, `${u.nombre} firmó el contrato.`);
+  if(p.contrato.firmaEmp && p.contrato.firmaTrab){ p.estado = "Contrato firmado"; sistema(p.id, "Los dos ya firmaron. Falta que quien contrata deposite el pago para empezar."); }
   guardar(); cerrarModal(); render();
-  toast(p.estado === "Contrato firmado" ? "Contrato firmado por ambas partes." : "Firma registrada. Falta la firma de la otra parte (cambie de cuenta para probarlo).");
+  toast(p.estado === "Contrato firmado" ? "Contrato firmado por los dos." : "Su firma quedó guardada. Falta que firme la otra persona.");
 }
 function depositar(id){
-  const p = db.postulaciones.find(x=>x.id===id), v = vacante(p.vacId);
-  modal(`<h2>Depositar pago protegido</h2><table><tbody><tr><th>Pago a la persona</th><td>${dinero(v.pago)}</td></tr><tr><th>Comisión ReImpulso (10 %)</th><td>${dinero(Math.round(v.pago*.1))}</td></tr><tr><th>Total</th><td><b>${dinero(Math.round(v.pago*1.1))}</b></td></tr></tbody></table>
-    <p class="sub">En esta demostración no se cobra nada. En la versión real se paga con tarjeta o transferencia a la cuenta protegida.</p><button class="btn" id="dep">Confirmar depósito</button>`,
-    m => m.querySelector("#dep").onclick = () => { p.contrato.deposito = Date.now(); p.estado = "En curso"; sistema(p.id, `${yo().nombre} depositó ${dinero(v.pago)} en la cuenta protegida. ¡Puede iniciar el servicio!`); guardar(); cerrarModal(); render(); toast("Pago protegido. El servicio está en curso."); });
+  const p = post(id), v = vacante(p.vacId);
+  modal(`<h2>Depositar el pago</h2><p style="font-size:1.05rem">Guardamos el dinero y se lo entregamos a la persona cuando usted confirme que el trabajo se terminó.</p>
+    <table><tbody><tr><th>Pago a la persona</th><td>${dinero(v.pago)}</td></tr><tr><th>Comisión de ReImpulso (10 %)</th><td>${dinero(Math.round(v.pago * .1))}</td></tr><tr><th>Total a pagar</th><td><b>${dinero(Math.round(v.pago * 1.1))}</b></td></tr></tbody></table>
+    <p style="color:var(--gris);font-size:.95rem">En esta versión de prueba no se cobra dinero real.</p><button class="btn ancho" id="dep">${ic("dinero")} Confirmar el depósito</button>`,
+    m => m.querySelector("#dep").onclick = () => { p.contrato.deposito = Date.now(); p.estado = "En curso"; sistema(p.id, `${yo().nombre} depositó ${dinero(v.pago)}. El dinero ya está guardado. ¡Puede empezar a trabajar!`); guardar(); cerrarModal(); render(); toast("El pago quedó guardado. La persona ya puede empezar."); });
 }
 function terminar(id){
-  const p = db.postulaciones.find(x=>x.id===id), v = vacante(p.vacId);
-  preguntar(`¿Confirma que el servicio «${v.titulo}» se realizó? Se liberarán ${dinero(v.pago)} a la persona.`, "Sí, el servicio terminó", () => {
-    p.contrato.liberado = Date.now(); p.estado = "Terminada"; sistema(p.id, `Servicio terminado. Se liberaron ${dinero(v.pago)} a la persona. Ya pueden calificarse.`); guardar(); render(); calificar(id); });
+  const p = post(id), v = vacante(p.vacId);
+  preguntar(`¿El trabajo «${esc(v.titulo)}» ya quedó hecho? Le entregaremos ${dinero(v.pago)} a la persona.`, "Sí, ya se terminó", () => {
+    p.contrato.liberado = Date.now(); p.estado = "Terminada"; sistema(p.id, `Trabajo terminado. Se entregaron ${dinero(v.pago)}. Ya se pueden calificar.`); guardar(); render(); calificar(id); });
 }
 function calificar(id){
-  const p = db.postulaciones.find(x=>x.id===id), u = yo(), emp = u.rol==="empresa";
+  const p = post(id), u = yo(), emp = u.rol === "empresa";
   const otro = emp ? usuario(p.trabId) : usuario(vacante(p.vacId).empresaId);
   let est = 0;
-  modal(`<h2>¿Cómo fue su experiencia con ${esc(otro.nombre)}?</h2><div class="estrellas" role="radiogroup" aria-label="Calificación">${[1,2,3,4,5].map(i=>`<button type="button" data-e="${i}" aria-label="${i} estrellas">★</button>`).join("")}</div>
-    <div class="campo"><label for="rtxt">Comentario (opcional)</label><textarea id="rtxt"></textarea></div><button class="btn" id="env">Enviar calificación</button>`,
+  const textos = ["", "Mal", "Regular", "Bien", "Muy bien", "Excelente"];
+  modal(`<h2>¿Cómo le fue con ${esc(otro.nombre)}?</h2><p>Toque las estrellas. 1 es mal y 5 es excelente.</p>
+    <div class="estrellas" role="radiogroup" aria-label="Calificación">${[1, 2, 3, 4, 5].map(i => `<button type="button" data-e="${i}" aria-label="${i} estrellas: ${textos[i]}">${ic("estrella", 44)}</button>`).join("")}</div>
+    <p id="estTxt" style="font-weight:700;min-height:1.6em"></p>
+    <div class="campo"><label for="rtxt">¿Quiere agregar un comentario? (no es obligatorio)</label><textarea id="rtxt"></textarea></div><button class="btn ancho" id="env">Enviar calificación</button>`,
     m => { const bs = m.querySelectorAll("[data-e]");
-      bs.forEach(b => b.onclick = () => { est = Number(b.dataset.e); bs.forEach(x => x.classList.toggle("on", Number(x.dataset.e) <= est)); });
-      m.querySelector("#env").onclick = () => { if(!est) return toast("Elija de 1 a 5 estrellas.");
-        db.resenas.push({para:otro.id,de:u.id,estrellas:est,texto:m.querySelector("#rtxt").value.trim()||"Sin comentario.",ts:Date.now()});
-        if(emp) p.calEmp = est; else p.calTrab = est; guardar(); cerrarModal(); render(); toast("¡Gracias! Su calificación ya es visible."); }; });
+      bs.forEach(b => b.onclick = () => { est = Number(b.dataset.e); bs.forEach(x => { const on = Number(x.dataset.e) <= est; x.classList.toggle("on", on); x.querySelector("svg").setAttribute("fill", on ? "currentColor" : "none"); }); m.querySelector("#estTxt").textContent = est + " de 5: " + textos[est]; });
+      m.querySelector("#env").onclick = () => { if(!est) return toast("Primero toque las estrellas.");
+        db.resenas.push({para:otro.id, de:u.id, estrellas:est, texto:m.querySelector("#rtxt").value.trim() || "Sin comentario.", ts:Date.now()});
+        if(emp) p.calEmp = est; else p.calTrab = est; guardar(); cerrarModal(); render(); toast("¡Gracias! Su calificación ya se puede ver."); }; });
 }
 render();
+if(yo()) bienvenida(yo());
+}
 </script>
 </body>
 </html>
